@@ -19,6 +19,7 @@ class Visualizer {
 private:
     sf::RenderWindow window;
     sf::Font font;
+    sf::Clock clock; //<Measures elapsed time
 
     // Textures
     sf::Texture trafficLightTextureRed;
@@ -44,5 +45,6 @@ public:
     void drawVehicle(const sf::Vector2f& position, float rotationAngle = 0.0f);
     void renderLoop(Vehicles & vehicles,Graph& graph);
     void drawVIPVehicle(const sf::Vector2f& position,float rotationAngle = 0.0f);
+    float getElapsedTimeInSeconds();
 };
 #endif

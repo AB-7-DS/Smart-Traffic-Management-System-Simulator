@@ -101,3 +101,7 @@ void Visualizer::drawTrafficSignal(const sf::Vector2f& position, int signalState
     trafficLightSprite->setScale(0.1f, 0.1f);  // Scale down the sprite to half its size
     window.draw(*trafficLightSprite);
 }
+
+float Visualizer::getElapsedTimeInSeconds() {
+    return clock.getElapsedTime().asSeconds();
+}
