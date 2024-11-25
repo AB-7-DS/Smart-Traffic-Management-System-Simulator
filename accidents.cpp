@@ -17,7 +17,7 @@ Accident_roads::~Accident_roads() {
 }
 
 void Accident_roads::loadRoadData(Graph& graph) {
-    std::ifstream file("accidents_or_closures.csv"); // Hardcoded file name
+    std::ifstream file("dataset/accidents_or_closures.csv"); // Hardcoded file name
     if (!file.is_open()) {
         std::cerr << "Error: Could not open file accidents_or_closures.csv" << std::endl;
         return;

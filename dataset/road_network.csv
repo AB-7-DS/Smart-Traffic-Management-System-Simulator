@@ -1,0 +1,7 @@
+Intersection1,Intersection2,TravelTime
+A,B,5
+B,C,10
+A,C,15
+C,D,7
+D,E,3
+B,D,9

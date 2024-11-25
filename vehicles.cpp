@@ -256,8 +256,8 @@ int Vehicles::findIDInVehicles(string vehicleID){
  * @brief Loads and reads vehicle data from CSV files.
  */
 void Vehicles::loadAndReadCSVs() {
-    ifstream vehiclesFile("vehicles.csv");
-    ifstream emergencyVehiclesFile("emergency_vehicles.csv");
+    ifstream vehiclesFile("dataset/vehicles.csv");
+    ifstream emergencyVehiclesFile("dataset/emergency_vehicles.csv");
 
     string line, vehicleID, startIntersection, endIntersection, priorityLevel;
 

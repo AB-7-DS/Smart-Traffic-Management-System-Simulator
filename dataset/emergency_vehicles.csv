@@ -1,0 +1,3 @@
+VehicleID,StartIntersection,EndIntersection,PriorityLevel
+EV1,A,D,High
+EV2,B,E,High
