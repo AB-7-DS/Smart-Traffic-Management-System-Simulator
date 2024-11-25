@@ -290,3 +290,12 @@ void Vehicles::loadAndReadCSVs() {
         emergencyVehiclesFile.close();
     }
 }
+
+/**
+ * @brief Returns a copy of the head of the Vehicles list.
+ * @return The head of the Vehicles list.
+ */
+Vehicle* Vehicles::getHead() {
+    Vehicle* copyHead = new Vehicle(head->vehicleID, head->startIntersection, head->endIntersection, head->priorityLevel);
+    return copyHead;
+}

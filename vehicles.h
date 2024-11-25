@@ -113,6 +113,12 @@ public:
      * @brief Loads and reads vehicle data from CSV files.
      */
     void loadAndReadCSVs();
+    /**
+     * @brief Get the Head object's copy
+     * 
+     * @return Vehicle* 
+     */
+    Vehicle* getHead();
 };
 
 #endif
