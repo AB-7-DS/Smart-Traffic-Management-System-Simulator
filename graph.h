@@ -201,7 +201,7 @@ public:
      */
     void displayIntersectionStatus();
 
-private:
+
     /**
      * @brief Adds an edge to the specified vertex.
      * 
@@ -211,6 +211,7 @@ private:
      * @param edge The edge to add to the vertex.
      */
     void addEdgeToVertex(Vertex* vertex, Edge* edge);
+    void printAdjacencyList() ;
 };
 
 #endif // GRAPH_H

@@ -34,5 +34,9 @@ int main() {
     cityGraph.displayRoadStatuses();
      // Display the status of all intersections for debugging purposes
    cityGraph.displayIntersectionStatus();
+   
+
+    cityGraph.printAdjacencyList();
     return 0;
+    
 }

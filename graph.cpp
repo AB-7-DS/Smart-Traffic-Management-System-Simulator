@@ -50,18 +50,25 @@ Graph::~Graph() {
 
 // Add a vertex to the graph
 void Graph::addVertex(const std::string& name) {
-    // Check if the vertex already exists
     if (findVertex(name)) {
         std::cerr << "Vertex " << name << " already exists!" << std::endl;
         return;
     }
 
-    // Create a new vertex and add it to the vertex list
     Vertex* newVertex = new Vertex(name);
     VertexNode* newNode = new VertexNode(newVertex);
-    newNode->next = headVertex;
-    headVertex = newNode;
+
+    if (!headVertex) {
+        headVertex = newNode; // First vertex
+    } else {
+        VertexNode* current = headVertex;
+        while (current->next) {
+            current = current->next; // Traverse to the end
+        }
+        current->next = newNode; // Add at the end
+    }
 }
+
 
 // Find a vertex by name
 Vertex* Graph::findVertex(const std::string& name) {
@@ -203,5 +210,28 @@ void Graph::displayIntersectionStatus()  {
             std::cout << "Open\n";
         }
         current = current->next;  // Move to the next vertex
+    }
+    
+}
+void Graph::printAdjacencyList() {
+    VertexNode* currentVertexNode = headVertex;
+
+    // Iterate through each vertex in the graph
+    while (currentVertexNode) {
+        Vertex* vertex = currentVertexNode->vertex;
+        std::cout << vertex->name << " -> ";
+
+        EdgeNode* currentEdgeNode = vertex->edges;
+
+        // Print all edges for the current vertex
+        while (currentEdgeNode) {
+            Edge* edge = currentEdgeNode->edge;
+            std::cout << "(" << edge->destination->name << ", " << edge->travelTime << " min)";
+            currentEdgeNode = currentEdgeNode->next;
+            if (currentEdgeNode) std::cout << ", ";
+        }
+        std::cout << std::endl;
+
+        currentVertexNode = currentVertexNode->next;
     }
 }
