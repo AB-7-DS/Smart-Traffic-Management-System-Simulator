@@ -1,5 +1,6 @@
 #include "graph.cpp"
 #include "accidents.cpp"
+#include "vehicle.cpp"
 #include <iostream>
 
 /**
@@ -33,10 +34,37 @@ int main() {
     std::cout << "\nUpdated Road Network Status:\n";
     cityGraph.displayRoadStatuses();
      // Display the status of all intersections for debugging purposes
-   cityGraph.displayIntersectionStatus();
-   
+    cityGraph.displayIntersectionStatus();
 
-    cityGraph.printAdjacencyList();
+    std::cout << "\n\nVehicle Simulation\n";
+    Vehicle v("V1", "A", "D", "high");
+    v.printVehicle();
+    std::cout << "\nMoving to next intersection...\n";
+    v.moveForward("B");
+    v.printVehicle();
+    std::cout << "\nMoving forward without specifying the next intersection...\n";
+    v.moveForward();
+    v.printVehicle();
+    std::cout << "\nNothing happens if the path is not preset...\n";
+    std::cout << "\nMoving to next intersection...\n";
+    v.moveForward("C");
+    v.printVehicle();
+
+
+    std::cout << "\nNow making another vehicle with a preset path...\n";
+    Vehicle v2("V2", "A", "C", "low");
+    v2.setPath("ABC");
+    std::cout << "Vehicle 2's path is preset to A -> B -> C\n";
+    v2.printPath();
+    v2.printVehicle();
+    std::cout << "\nMoving to next intersection...\n";
+    v2.moveForward();
+    v2.printVehicle();
+
+    std::cout << "\nThe vehicle with a preset path will not deviate from the path even if you specify the next intersection...\n";
+    std::cout << "Moving to the next intersection (D)...\n";
+    v2.moveForward("D");
+    v2.printVehicle();
+
     return 0;
-    
 }
