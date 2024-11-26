@@ -38,7 +38,8 @@ private:
             : intersection1(i1), intersection2(i2), isBlocked(blocked), next(nullptr) {}
     };
 
-    AccidentNode* head;  /**< Head of the linked list of accident nodes */
+    AccidentNode* head;  /**< Head of the linked list of blocked accident nodes */
+    AccidentNode* underRepairHead;  /**< Head of the linked list of under repair accident nodes */
 
 public:
     /**
@@ -86,6 +87,29 @@ public:
      * @param graph The graph containing the intersections and their blocked status.
      */
     void displayBlockedIntersections(Graph& graph);
+
+    /**
+     * @brief Display the under-repair intersections in the graph.
+     * 
+     * This function prints the names of all intersections that are currently under repair in the graph.
+     * 
+     * @param graph The graph containing the intersections and their under-repair status.
+     */
+    void displayUnderRepairIntersections(Graph& graph);
+
+    /**
+     * @brief Display the blocked roads in the network.
+     * 
+     * This function prints the list of roads that are currently blocked.
+     */
+    void displayBlockedRoads();
+
+    /**
+     * @brief Display the under-repair roads in the network.
+     * 
+     * This function prints the list of roads that are currently under repair.
+     */
+    void displayUnderRepairRoads();
 };
 
 #endif // ACCIDENTS_H

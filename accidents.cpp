@@ -1,41 +1,106 @@
+// Accident_roads.cpp
+
 #include "accidents.h"
 #include "graph.h"
 #include <fstream>
 #include <iostream>
 
 // Constructor
-Accident_roads::Accident_roads() : head(nullptr) {}
+Accident_roads::Accident_roads() : head(nullptr), underRepairHead(nullptr) {}
 
 // Destructor
 Accident_roads::~Accident_roads() {
+    // Delete accident nodes (Blocked)
     AccidentNode* current = head;
     while (current) {
         AccidentNode* temp = current;
         current = current->next;
         delete temp;
     }
+
+    // Delete under repair nodes
+    AccidentNode* repairCurrent = underRepairHead;
+    while (repairCurrent) {
+        AccidentNode* temp = repairCurrent;
+        repairCurrent = repairCurrent->next;
+        delete temp;
+    }
 }
 
 void Accident_roads::loadRoadData(Graph& graph) {
-    std::ifstream file("dataset/accidents_or_closures.csv"); // Hardcoded file name
+    std::ifstream file("dataset/road_closures.csv"); 
     if (!file.is_open()) {
-        std::cerr << "Error: Could not open file accidents_or_closures.csv" << std::endl;
+        std::cerr << "Error: Could not open file road_closures.csv" << std::endl;
         return;
     }
 
     std::string intersection1, intersection2, status;
     while (file.good()) {
-        std::getline(file, intersection1, ',');
+        std::getline(file, intersection1, ','); 
         std::getline(file, intersection2, ',');
         std::getline(file, status);
 
         if (!intersection1.empty() && !intersection2.empty() && !status.empty()) {
             bool isBlocked = (status == "Blocked");
 
-            // Update the graph's vertices' blocked status
-            graph.markIntersectionsAsBlocked(intersection1, intersection2, isBlocked);
+            // Create a new node for this road closure
+            AccidentNode* newNode = new AccidentNode(intersection1, intersection2, isBlocked);
+            
+            // Insert the new node at the end of the blocked list
+            if (isBlocked) {
+                if (head == nullptr) {
+                    head = newNode;  // If the list is empty, the new node is the first node
+                } else {
+                    AccidentNode* temp = head;
+                    while (temp->next != nullptr) {
+                        temp = temp->next;  // Traverse to the end of the list
+                    }
+                    temp->next = newNode;  // Insert the new node at the end
+                }
+            } else if (status == "Under Repair") {
+                // Insert under repair intersections in the separate list at the end
+                if (underRepairHead == nullptr) {
+                    underRepairHead = newNode;  // If the list is empty, the new node is the first node
+                } else {
+                    AccidentNode* temp = underRepairHead;
+                    while (temp->next != nullptr) {
+                        temp = temp->next;  // Traverse to the end of the list
+                    }
+                    temp->next = newNode;  // Insert the new node at the end
+                }
+            }
+
+            // Update the graph's vertices' blocked status (mark as blocked for both Blocked and Under Repair)
+            graph.markIntersectionsAsBlocked(intersection1, intersection2, true);
         }
     }
 
     file.close();
+}
+void Accident_roads::displayBlockedRoads() {
+    std::cout << "Blocked Roads:\n";
+
+    AccidentNode* current = head;
+    if (current == nullptr) {
+        std::cout << "No blocked roads.\n";
+    }
+
+    while (current) {
+        std::cout << "- " << current->intersection1 << " to " << current->intersection2 << " is blocked.\n";
+        current = current->next;
+    }
+}
+
+void Accident_roads::displayUnderRepairRoads() {
+    std::cout << "Under Repair Roads:\n";
+
+    AccidentNode* current = underRepairHead;
+    if (current == nullptr) {
+        std::cout << "No roads under repair.\n";
+    }
+
+    while (current) {
+        std::cout << "- " << current->intersection1 << " to " << current->intersection2 << " is under repair.\n";
+        current = current->next;
+    }
 }

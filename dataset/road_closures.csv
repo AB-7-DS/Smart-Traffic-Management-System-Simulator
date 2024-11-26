@@ -1,0 +1,42 @@
+Intersection1,Intersection2,Status
+B,C,Blocked
+D,E,Clear
+C,D,Under Repair
+A,F,Blocked
+E,F,Clear
+F,G,Clear
+H,I,Blocked
+C,H,Under Repair
+G,J,Blocked
+B,F,Under Repair
+A,G,Blocked
+L,M,Clear
+K,L,Blocked
+M,N,Under Repair
+N,O,Blocked
+P,Q,Under Repair
+Q,R,Blocked
+R,S,Clear
+S,T,Blocked
+T,U,Clear
+U,V,Under Repair
+W,X,Blocked
+Y,Z,Clear
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,

@@ -2,7 +2,7 @@
 #include "accidents.cpp"
 #include "vehicle.cpp"
 #include <iostream>
-
+using namespace std;
 /**
  * @brief Main entry point of the program.
  *
@@ -17,24 +17,68 @@ int main() {
     // Load the road network from a CSV file
     cityGraph.loadRoadData("dataset/road_network.csv");
 
-    // Display the initial road network status
-    std::cout << "Initial Road Network Status:\n";
-    cityGraph.displayRoadStatuses();
+    
 
     // Create an instance of the Accident_roads class
     Accident_roads accidentManager;
 
     // Load accident or blocked road data and update the graph
     accidentManager.loadRoadData(cityGraph);
+    int choice;
+    do {
+        // Display the menu
+        cout << "------ Simulation Dashboard ------\n";
+        cout << "1. Display City Traffic Network\n";
+        cout << "2. Display Traffic Signal Status\n";
+        cout << "3. Display Congestion Status\n";
+        cout << "4. Display Blocked Roads\n";
+        cout << "5. Handle Emergency Vehicle Routing\n";
+        cout << "6. Block Road due to Accident\n";
+        cout << "7. Simulate Vehicle Routing\n";
+        cout << "8. Exit Simulation\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
 
-    // Mark blocked intersections in the graph
-    cityGraph.displayBlockedIntersections();
+        // Handle menu choices using switch-case
+        switch (choice) {
+            case 1:
+                cityGraph.printAdjacencyList();
+                break;
+            case 2:
+                
+                break;
+            case 3:
+              
+                break;
+            case 4:
+               accidentManager.displayBlockedRoads();
+               accidentManager.displayUnderRepairRoads();
 
-    // Display the updated road network with blocked intersections
-    std::cout << "\nUpdated Road Network Status:\n";
-    cityGraph.displayRoadStatuses();
-     // Display the status of all intersections for debugging purposes
-    cityGraph.displayIntersectionStatus();
+                break;
+            case 5:
+               
+                break;
+            case 6:
+              
+                break;
+            case 7:
+               
+                break;
+            case 8:
+                cout << "Exiting Simulation. Goodbye!\n";
+                break;
+            default:
+                cout << "Invalid choice! Please try again.\n";
+        }
+
+        cout << endl; // Line break for better readability
+    } while (choice != 8);
+
+ 
+
+
+
+
 
     std::cout << "\n\nVehicle Simulation\n";
     Vehicle v("V1", "A", "D", "high");
