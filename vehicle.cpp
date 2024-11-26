@@ -7,14 +7,26 @@ Vehicle::Vehicle(string vehicleID, string startIntersection, string endIntersect
     this->vehicleID = vehicleID;
     this->priorityLevel = priorityLevel;
     this->next = NULL;
-    // Initialize currentIntersectionId to startIntersection
-    this->currentIntersectionId = startIntersection; 
-    // Initialize nextIntersectionId to an empty string
-    this->nextIntersectionId = ""; 
+    this->path = new string[1000];
+    this->currentIntersectionInPath = 0;
+    this->path[currentIntersectionInPath] = startIntersection;
+    this->pathLength = 1;
+
 }
-void Vehicle::moveVehicle(string currentIntersectionId, string nextIntersectionId){
-    if (currentIntersectionId == endIntersection)
-        return;
-    this->currentIntersectionId = currentIntersectionId;
-    this->nextIntersectionId = nextIntersectionId;
+void Vehicle::moveForward(string nextIntersectionId){
+    currentIntersectionInPath++;
+    path[currentIntersectionInPath] = nextIntersectionId;
+    pathLength++;
+}
+
+void Vehicle::printVehicle(){
+    cout << "Vehicle ID: " << vehicleID << endl;
+    cout << "Start Intersection: " << startIntersection << endl;
+    cout << "End Intersection: " << endIntersection << endl;
+    cout << "Priority Level: " << priorityLevel << endl;
+    cout << "Path Traversed: ";
+    for(int i = 0; i < pathLength; i++){
+        cout << path[i] << " ";
+    }
+    cout << endl;
 }

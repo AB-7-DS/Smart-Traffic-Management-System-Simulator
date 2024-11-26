@@ -13,13 +13,17 @@ struct Vehicle {
     const string startIntersection; //<The starting intersection for the vehicle's route never to be changed
     const string endIntersection; //<The ending intersection for the vehicle's route never to be changed
     string priorityLevel; //<The priority level of the vehicle (e.g., high, low)
-    string currentIntersectionId; //<The current intersection the vehicle is at. This will be updated as the vehicle moves.
-    string nextIntersectionId; //<The next intersection the vehicle will move to. This will be updated as the vehicle moves.
+    string* path; //<The path the vehicle will take to reach its destination.
+    int currentIntersectionInPath; //< an index in the path array that represents the current intersection the vehicle is at. the next intersection is at currentIntersectionInPath + 1
+    int pathLength; //<The length of the path array
+    
     /**
      * @brief Pointer to the next vehicle in a linked list.
      */
     Vehicle *next;
 
+    
+    
     /**
      * @brief Constructs a Vehicle with given attributes.
      * @param vehicleID The unique identifier for the vehicle.
@@ -34,7 +38,8 @@ struct Vehicle {
      * @param currentIntersectionId 
      * @param nextIntersectionId 
      */
-    void moveVehicle(string currentIntersectionId, string nextIntersectionId);
+    void moveForward(string nextIntersectionId);
+    void printVehicle();
 };
 
 #endif
