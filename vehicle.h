@@ -28,6 +28,13 @@ struct Vehicle {
      * @param priorityLevel The priority level of the vehicle.
      */
     Vehicle(string vehicleID, string startIntersection, string endIntersection, string priorityLevel);
+    /**
+     * @brief updates the currentIntersectionId and nextIntersectionId of the vehicle
+     * 
+     * @param currentIntersectionId 
+     * @param nextIntersectionId 
+     */
+    void moveVehicle(string currentIntersectionId, string nextIntersectionId);
 };
 
 #endif

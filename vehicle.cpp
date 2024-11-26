@@ -1,18 +1,20 @@
 #include<string>
 #include "vehicle.h"
 using namespace std;
-
-/**
- * @brief Constructs a Vehicle with given attributes.
- * @param vehicleID The unique identifier for the vehicle.
- * @param startIntersection The starting intersection for the vehicle.
- * @param endIntersection The ending intersection for the vehicle.
- * @param priorityLevel The priority level of the vehicle.
- */
-Vehicle::Vehicle(string vehicleID, string startIntersection, string endIntersection, string priorityLevel){
+Vehicle::Vehicle(string vehicleID, string startIntersection, string endIntersection, string priorityLevel)
+    : startIntersection(startIntersection), endIntersection(endIntersection)
+{
     this->vehicleID = vehicleID;
-    this->startIntersection = startIntersection;
-    this->endIntersection = endIntersection;
     this->priorityLevel = priorityLevel;
     this->next = NULL;
+    // Initialize currentIntersectionId to startIntersection
+    this->currentIntersectionId = startIntersection; 
+    // Initialize nextIntersectionId to an empty string
+    this->nextIntersectionId = ""; 
+}
+void Vehicle::moveVehicle(string currentIntersectionId, string nextIntersectionId){
+    if (currentIntersectionId == endIntersection)
+        return;
+    this->currentIntersectionId = currentIntersectionId;
+    this->nextIntersectionId = nextIntersectionId;
 }
