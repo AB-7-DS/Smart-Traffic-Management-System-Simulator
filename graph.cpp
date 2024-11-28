@@ -250,3 +250,62 @@ void Graph::printAdjacencyList() {
         currentVertexNode = currentVertexNode->next;
     }
 }
+// Checks if a vertex (node) is blocked
+bool Graph::isBlocked(const std::string& nodeName) {
+    Vertex* vertex = findVertex(nodeName); // Find the vertex
+    if (vertex) {
+        return vertex->isBlocked();  // Return the blocked status of the vertex
+    }
+    return false; // If the vertex is not found, return false
+}
+
+int Graph::getVertexCount() {
+    int count = 0;
+    VertexNode* current = headVertex;
+    while (current) {
+        ++count;
+        current = current->next;
+    }
+    return count;
+}
+// Gets all the neighbors of a specific vertex
+void Graph::getNeighbors(const std::string& nodeName, std::string* neighbors, int& count) {
+    Vertex* vertex = findVertex(nodeName); // Find the vertex
+    if (vertex) {
+        count = 0;
+        EdgeNode* temp = vertex->edges;  // Start with the adjacency list (edges)
+        while (temp) {
+            neighbors[count++] = temp->edge->destination->name; // Add neighbor's name
+            temp = temp->next;  // Move to the next edge
+        }
+    } else {
+        count = 0; // If the vertex is not found, set count to 0
+    }
+}
+
+// Gets the weight of the edge between two vertices
+int Graph::getEdgeWeight(const std::string& start, const std::string& end) {
+    Vertex* startVertex = findVertex(start);
+    Vertex* endVertex = findVertex(end);
+    
+    if (startVertex && endVertex) {
+        EdgeNode* temp = startVertex->edges;
+        while (temp) {
+            if (temp->edge->destination == endVertex) {
+                return temp->edge->travelTime; // Return the travel time if edge found
+            }
+            temp = temp->next;
+        }
+    }
+    return -1; // Return -1 if no edge exists between the two vertices
+}
+
+// Gets all the vertices in the graph
+void Graph::getVertices(std::string* vertices, int& count) {
+    count = 0;
+    VertexNode* temp = headVertex;
+    while (temp) {
+        vertices[count++] = temp->vertex->name; // Add vertex name to the list
+        temp = temp->next;  // Move to the next vertex
+    }
+}

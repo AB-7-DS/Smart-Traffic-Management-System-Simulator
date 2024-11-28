@@ -104,3 +104,30 @@ void Accident_roads::displayUnderRepairRoads() {
         current = current->next;
     }
 }
+
+void Accident_roads::blockRoad(const std::string& start, const std::string& end, Graph& cityGraph) {
+    // Check if both intersections exist in the graph
+    if (cityGraph.findVertex(start) == nullptr || cityGraph.findVertex(end) == nullptr) {
+        std::cout << "One or both intersections do not exist in the graph.\n";
+        return;
+    }
+
+    // Mark the intersections as blocked in the graph
+    cityGraph.markIntersectionsAsBlocked(start, end, true);
+
+    // Add the blocked road to the accident manager
+    AccidentNode* newBlockedRoad = new AccidentNode(start, end, true);
+    if (head == nullptr) {
+        head = newBlockedRoad;  // If the list is empty, make this the first node
+    } else {
+        AccidentNode* temp = head;
+        while (temp->next != nullptr) {
+            temp = temp->next;  // Traverse to the end of the list
+        }
+        temp->next = newBlockedRoad;  // Add the new node at the end
+    }
+
+    // Display the updated list of blocked roads
+    std::cout << "\nUpdated Blocked Roads:\n";
+    displayBlockedRoads();
+}

@@ -22,21 +22,18 @@ public:
 
     /**
      * @brief Constructs a Vertex object.
-     * 
      * @param name The name of the intersection.
      */
     Vertex(const std::string& name);
 
     /**
      * @brief Checks if the intersection is blocked.
-     * 
      * @return true if the intersection is blocked, false otherwise.
      */
     bool isBlocked() const;
 
     /**
      * @brief Sets the blocked status of the intersection.
-     * 
      * @param status The new blocked status (true for blocked, false for not blocked).
      */
     void setBlocked(bool status);
@@ -56,7 +53,6 @@ public:
 
     /**
      * @brief Constructs an Edge object.
-     * 
      * @param destination The destination intersection.
      * @param travelTime The travel time to the destination.
      */
@@ -77,7 +73,6 @@ public:
 
     /**
      * @brief Constructs an EdgeNode object.
-     * 
      * @param edge The edge that this node will represent.
      */
     EdgeNode(Edge* edge);
@@ -97,7 +92,6 @@ public:
 
     /**
      * @brief Constructs a VertexNode object.
-     * 
      * @param vertex The vertex that this node will represent.
      */
     VertexNode(Vertex* vertex);
@@ -117,22 +111,16 @@ public:
 
     /**
      * @brief Constructs an empty Graph object.
-     * 
-     * Initializes an empty graph with no vertices or edges.
      */
     Graph();
 
     /**
      * @brief Destructor for the Graph object.
-     * 
-     * Deletes all the vertices and edges in the graph to free memory.
      */
     ~Graph();
 
     /**
      * @brief Adds a vertex (intersection) to the graph.
-     * 
-     * If a vertex with the same name doesn't already exist, it is created and added to the graph.
      * 
      * @param name The name of the new intersection.
      */
@@ -140,9 +128,6 @@ public:
 
     /**
      * @brief Finds a vertex by its name.
-     * 
-     * Searches the graph for a vertex with the given name.
-     * 
      * @param name The name of the vertex to find.
      * @return A pointer to the Vertex object if found, or nullptr if not found.
      */
@@ -150,8 +135,6 @@ public:
 
     /**
      * @brief Adds a road (edge) between two intersections.
-     * 
-     * Adds an edge between two vertices, connecting them with the specified travel time.
      * 
      * @param start The name of the starting intersection.
      * @param end The name of the destination intersection.
@@ -161,25 +144,17 @@ public:
 
     /**
      * @brief Loads road network data from a file.
-     * 
-     * Reads road data (intersections and travel times) from a CSV file and adds vertices and edges to the graph.
-     * The default file name is "road_network.csv", but another file name can be specified.
-     * 
      * @param filename The name of the CSV file to load road data from (default is "road_network.csv").
      */
     void loadRoadData(const std::string& filename = "road_network.csv");
 
     /**
      * @brief Displays the current statuses of all roads in the graph.
-     * 
-     * Prints out the vertices and the edges connecting them, including the travel times.
      */
     void displayRoadStatuses();
 
     /**
      * @brief Marks the specified intersections as blocked or unblocked.
-     * 
-     * Updates the blocked status of the two intersections in the graph.
      * 
      * @param intersection1 The name of the first intersection.
      * @param intersection2 The name of the second intersection.
@@ -189,29 +164,62 @@ public:
 
     /**
      * @brief Displays the blocked intersections in the graph.
-     * 
-     * Prints the names of all intersections that are currently blocked.
      */
     void displayBlockedIntersections();
 
     /**
      * @brief Displays the status of each intersection in the graph.
-     * 
-     * Prints the name of each intersection and its current blocked status.
      */
     void displayIntersectionStatus();
 
-
     /**
      * @brief Adds an edge to the specified vertex.
-     * 
-     * Adds an Edge object to the adjacency list of the specified vertex.
      * 
      * @param vertex The vertex to which the edge will be added.
      * @param edge The edge to add to the vertex.
      */
     void addEdgeToVertex(Vertex* vertex, Edge* edge);
-    void printAdjacencyList() ;
+
+    /**
+     * @brief Prints the adjacency list representation of the graph.
+     */
+    void printAdjacencyList();
+
+    /**
+     * @brief Checks if a vertex is blocked.
+     * @param nodeName The name of the vertex to check.
+     * @return true if the vertex is blocked, false otherwise.
+     */
+    bool isBlocked(const std::string& nodeName);
+
+    /**
+     * @brief Gets the neighbors of a specified vertex.
+     * @param nodeName The name of the vertex.
+     * @param neighbors Array to store the names of neighboring vertices.
+     * @param count The number of neighbors found.
+     */
+    void getNeighbors(const std::string& nodeName, std::string* neighbors, int& count);
+
+    /**
+     * @brief Gets the travel time between two vertices.
+     * @param start The starting vertex name.
+     * @param end The destination vertex name.
+     * @return The travel time between the two vertices, or -1 if no edge exists.
+     */
+    int getEdgeWeight(const std::string& start, const std::string& end);
+
+    /**
+     * @brief Gets all vertices in the graph.
+     * @param vertices Array to store the names of vertices.
+     * @param count The number of vertices found.
+     */
+    void getVertices(std::string* vertices, int& count);
+
+    /**
+     * @brief Gets the total number of vertices in the graph.
+     * @return The number of vertices in the graph.
+     */
+    int getVertexCount();
 };
 
 #endif // GRAPH_H

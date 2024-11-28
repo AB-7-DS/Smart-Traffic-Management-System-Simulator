@@ -42,6 +42,7 @@ private:
     AccidentNode* underRepairHead;  /**< Head of the linked list of under repair accident nodes */
 
 public:
+    void blockRoad(const std::string& start, const std::string& end, Graph& cityGraph);
     /**
      * @brief Default constructor for the Accident_roads class.
      * 
@@ -110,6 +111,8 @@ public:
      * This function prints the list of roads that are currently under repair.
      */
     void displayUnderRepairRoads();
+
+    
 };
 
 #endif // ACCIDENTS_H

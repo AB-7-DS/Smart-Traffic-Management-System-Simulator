@@ -1,7 +1,7 @@
 #include <string>
 #include <iostream>
 #include "vehicle.h"
-
+using namespace std;
 Vehicle::Vehicle(std::string vehicleID, std::string startIntersection, std::string endIntersection, std::string priorityLevel)
     : startIntersection(startIntersection), endIntersection(endIntersection)
 {

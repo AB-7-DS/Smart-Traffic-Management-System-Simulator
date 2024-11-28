@@ -2,7 +2,9 @@
 #include "accidents.cpp"
 #include "vehicle.cpp"
 #include <iostream>
+#include <string>
 using namespace std;
+
 /**
  * @brief Main entry point of the program.
  *
@@ -17,13 +19,12 @@ int main() {
     // Load the road network from a CSV file
     cityGraph.loadRoadData("dataset/road_network.csv");
 
-    
-
     // Create an instance of the Accident_roads class
     Accident_roads accidentManager;
 
     // Load accident or blocked road data and update the graph
     accidentManager.loadRoadData(cityGraph);
+    string start,end;
     int choice;
     do {
         // Display the menu
@@ -45,24 +46,26 @@ int main() {
                 cityGraph.printAdjacencyList();
                 break;
             case 2:
-                
                 break;
             case 3:
-              
                 break;
             case 4:
-               accidentManager.displayBlockedRoads();
-               accidentManager.displayUnderRepairRoads();
-
+                accidentManager.displayBlockedRoads();
+                accidentManager.displayUnderRepairRoads();
                 break;
             case 5:
-               
                 break;
-            case 6:
-              
+            case 6: {
+                std::cout << "Enter the start intersection to block: ";
+                std::cin >> start;
+                std::cout << "Enter the end intersection to block: ";
+                std::cin >> end;
+
+                // Use the Accident_roads member function to block the road
+                accidentManager.blockRoad(start, end, cityGraph);
                 break;
+            }
             case 7:
-               
                 break;
             case 8:
                 cout << "Exiting Simulation. Goodbye!\n";
@@ -74,12 +77,7 @@ int main() {
         cout << endl; // Line break for better readability
     } while (choice != 8);
 
- 
-
-
-
-
-
+    // Demonstrate Vehicle Simulation
     std::cout << "\n\nVehicle Simulation\n";
     Vehicle v("V1", "A", "D", "high");
     v.printVehicle();
@@ -94,9 +92,8 @@ int main() {
     v.moveForward("C");
     v.printVehicle();
 
-
     std::cout << "\nNow making another vehicle with a preset path...\n";
-    Vehicle v2("V2", "A", "C", "low");
+    Vehicle v2("V2", "A", "F", "low");
     v2.setPath("ABC");
     std::cout << "Vehicle 2's path is preset to A -> B -> C\n";
     v2.printPath();
@@ -109,6 +106,8 @@ int main() {
     std::cout << "Moving to the next intersection (D)...\n";
     v2.moveForward("D");
     v2.printVehicle();
+
+
 
     return 0;
 }

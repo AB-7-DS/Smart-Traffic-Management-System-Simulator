@@ -1,289 +1,196 @@
-#include<iostream>
-#include <fstream>
+#include <iostream>
+#include<fstream>
 #include <sstream>
-#include "vehicles.h"
-using namespace std;
+#include "vehicles.h"  // Include the correct header file
+#include"graph.h"
 
-/**
- * @brief Constructs an empty Vehicles list.
- */
-Vehicles::Vehicles(){
-    head = NULL;
+// Constructor initializes an empty list
+Vehicles::Vehicles() {
+    head = nullptr;
+   
 }
 
-/**
- * @brief Destroys the Vehicles list, releasing allocated memory.
- */
-Vehicles::~Vehicles(){
-    // Traverse Vehicles and delete each Vehicle until reaching NULL
+// Destructor cleans up the list by deleting all vehicles
+Vehicles::~Vehicles() {
     Vehicle* current = head;
-    while (current != NULL) {
-        Vehicle* nextVehicle = current->next;
+    while (current != nullptr) {
+        Vehicle* next = current->next;
         delete current;
-        current = nextVehicle;  
+        current = next;
     }
-    head = NULL;
+    head = nullptr;
 }
 
-/**
- * @brief Inserts a new Vehicle at the head of the list.
- * @param VehicleID The unique identifier for the vehicle.
- * @param startIntersection The starting intersection for the vehicle.
- * @param endIntersection The ending intersection for the vehicle.
- * @param priorityLevel The priority level of the vehicle.
- */
-void Vehicles::insertAtHead(string VehicleID, string startIntersection, string endIntersection, string priorityLevel){
-    // Create new Vehicle and set its attributes
+// Inserts a new vehicle at the beginning of the list
+void Vehicles::insertAtHead(std::string VehicleID, std::string startIntersection, std::string endIntersection, std::string priorityLevel) {
     Vehicle* newVehicle = new Vehicle(VehicleID, startIntersection, endIntersection, priorityLevel);
-
-    if(isEmpty()){
+    if (isEmpty()) {
         head = newVehicle;
-    }
-    else{
-        // When head isn't NULL, store its address in the new Vehicle
+    } else {
         newVehicle->next = head;
         head = newVehicle;
     }
 }
 
-/**
- * @brief Enqueues a new Vehicle at the end of the list or at the head if priority is high.
- * @param VehicleID The unique identifier for the vehicle.
- * @param startIntersection The starting intersection for the vehicle.
- * @param endIntersection The ending intersection for the vehicle.
- * @param priorityLevel The priority level of the vehicle.
- */
-void Vehicles::enqueue(string VehicleID, string startIntersection, string endIntersection, string priorityLevel){
-    // Create the Vehicle
-    Vehicle *temp = new Vehicle(VehicleID, startIntersection, endIntersection, priorityLevel);
-    // If the Vehicles list is empty
-    if(isEmpty()){
-        head = temp;
-        return;
-    }
-    if(priorityLevel == "High"){
+void Vehicles::enqueue(std::string VehicleID, std::string startIntersection, std::string endIntersection, std::string priorityLevel) {
+    // Create the new Vehicle object
+    Vehicle* newVehicle = new Vehicle(VehicleID, startIntersection, endIntersection, priorityLevel);
+
+    if (isEmpty()) {
+        head = newVehicle;  // If list is empty, just add the new vehicle as the head
+    } else if (priorityLevel == "High") {
+        // If priority is High, insert at the head of the list
         insertAtHead(VehicleID, startIntersection, endIntersection, priorityLevel);
-        return;
-    }
-    else{
-        Vehicle *current = head;
-        while(current->next != NULL){
+    } else if (priorityLevel == "Medium") {
+        // If priority is Medium, insert after the head (just after high-priority vehicles)
+        Vehicle* current = head;
+        while (current->next != nullptr && current->next->priorityLevel == "Medium") {
             current = current->next;
         }
-        current->next = temp;
+        newVehicle->next = current->next;  // Set the next of the new vehicle to the current vehicle's next
+        current->next = newVehicle;        // Insert the new vehicle after the current vehicle
+    } else {
+        // If priority is Low, insert at the end of the list
+        Vehicle* current = head;
+        while (current->next != nullptr) {
+            current = current->next;
+        }
+        current->next = newVehicle;  // Insert the vehicle at the end
     }
 }
 
-/**
- * @brief Inserts a new Vehicle after a specified position in the list.
- * @param position The position after which the new Vehicle should be inserted.
- * @param VehicleID The unique identifier for the vehicle.
- * @param startIntersection The starting intersection for the vehicle.
- * @param endIntersection The ending intersection for the vehicle.
- * @param priorityLevel The priority level of the vehicle.
- * @return True if the insertion was successful, false otherwise.
- */
-bool Vehicles::insertAfterPosition(int position, string VehicleID, string startIntersection, string endIntersection, string priorityLevel){
-    Vehicle *newVehicle = new Vehicle(VehicleID, startIntersection, endIntersection, priorityLevel);
-    if(position < 0){
-        return false;
-    }
-    if(position == 0){
+
+// Insert after a specific position in the list
+bool Vehicles::insertAfterPosition(int position, std::string VehicleID, std::string startIntersection, std::string endIntersection, std::string priorityLevel) {
+    if (position < 0) return false;
+    Vehicle* newVehicle = new Vehicle(VehicleID, startIntersection, endIntersection, priorityLevel);
+    if (position == 0) {
         insertAtHead(VehicleID, startIntersection, endIntersection, priorityLevel);
+        return true;
     }
-    else{
-        int index = 0;
-        Vehicle *current = head;
-        Vehicle *next;
-        while(current->next != NULL && index < position){
-            current = current->next;
-            index++;
-        }
-        next = current->next;
-        current->next = newVehicle;
-        newVehicle->next = next;
+    Vehicle* current = head;
+    int index = 0;
+    while (current != nullptr && index < position) {
+        current = current->next;
+        index++;
     }
+    if (current == nullptr) return false;
+
+    newVehicle->next = current->next;
+    current->next = newVehicle;
     return true;
 }
 
-/**
- * @brief Inserts a new Vehicle after an existing vehicle with a specific ID.
- * @param ID The ID of the vehicle after which the new vehicle should be inserted.
- * @param VehicleID The unique identifier for the new vehicle.
- * @param startIntersection The starting intersection for the new vehicle.
- * @param endIntersection The ending intersection for the new vehicle.
- * @param priorityLevel The priority level of the new vehicle.
- * @return True if the insertion was successful, false otherwise.
- */
-bool Vehicles::insertAfterID(string ID, string VehicleID, string startIntersection, string endIntersection, string priorityLevel){
-    int index = 0;
-    index = findIDInVehicles(ID);
-    if(index != -1){
-        insertAfterPosition(index, VehicleID, startIntersection, endIntersection, priorityLevel);
-        return true;
-    }
-    return false;
+// Insert after a specific vehicle ID
+bool Vehicles::insertAfterID(std::string ID, std::string VehicleID, std::string startIntersection, std::string endIntersection, std::string priorityLevel) {
+    int position = findIDInVehicles(ID);
+    if (position == -1) return false;
+    return insertAfterPosition(position, VehicleID, startIntersection, endIntersection, priorityLevel);
 }
 
-/**
- * @brief Deletes the first Vehicle in the list.
- */
-void Vehicles::deleteAtStart(){
-    if(!isEmpty()){
-        Vehicle *temp = head; // Store old head/first Vehicle
-        head = head->next; // New head is the next Vehicle
-        delete temp; // Delete old head/first Vehicle
+// Delete the first vehicle in the list
+void Vehicles::deleteAtStart() {
+    if (!isEmpty()) {
+        Vehicle* temp = head;
+        head = head->next;
+        delete temp;
     }
 }
 
-/**
- * @brief Deletes the last Vehicle in the list.
- * @return True if the deletion was successful, false otherwise.
- */
+// Delete the last vehicle in the list
 bool Vehicles::deleteAtEnd() {
-    if (isEmpty()) {
-        return false;
-    }
-    // Only one Vehicle in the list
-    if (head->next == NULL) {
+    if (isEmpty()) return false;
+    if (head->next == nullptr) {
         deleteAtStart();
         return true;
     }
-    // Delete from end when Vehicles > 1
     Vehicle* secondLast = head;
-    while (secondLast->next->next != NULL) {
+    while (secondLast->next && secondLast->next->next != nullptr) {
         secondLast = secondLast->next;
     }
-
-    // Delete the last Vehicle
-    delete (secondLast->next);
-    secondLast->next = NULL;
+    delete secondLast->next;
+    secondLast->next = nullptr;
     return true;
 }
 
-/**
- * @brief Deletes a Vehicle at a specific index.
- * @param position The index of the Vehicle to delete.
- * @return True if the deletion was successful, false otherwise.
- */
-bool Vehicles::deleteAtIndex(int position){
-    if(position < 0){
-        return false;
-    }
-    if(position == 0){
+// Delete a vehicle by its ID
+bool Vehicles::deleteAtID(std::string ID) {
+    if (head == nullptr) return false;
+    if (head->vehicleID == ID) {
         deleteAtStart();
         return true;
     }
-    Vehicle *current = head;
-    Vehicle *previous = NULL;
+    Vehicle* current = head;
+    while (current->next != nullptr && current->next->vehicleID != ID) {
+        current = current->next;
+    }
+    if (current->next == nullptr) return false;
+    Vehicle* temp = current->next;
+    current->next = current->next->next;
+    delete temp;
+    return true;
+}
+
+// Checks if the list is empty
+bool Vehicles::isEmpty() {
+    return head == nullptr;
+}
+
+// Print all vehicles in the list
+void Vehicles::printVehicles() {
+    Vehicle* current = head;
+    while (current != nullptr) {
+        std::cout << "Vehicle ID: " << current->vehicleID << ", Priority: " << current->priorityLevel << std::endl;
+        current = current->next;
+    }
+}
+
+// Finds a vehicle in the list by its ID
+int Vehicles::findIDInVehicles(std::string vehicleID) {
+    Vehicle* current = head;
     int index = 0;
-    while (current->next->next != NULL && index < position) {
-        previous = current;
+    while (current != nullptr) {
+        if (current->vehicleID == vehicleID) return index;
         current = current->next;
         index++;
     }
-    previous->next = current->next;
-    // Delete the Vehicle
-    delete current;
-    return true;
-}
-
-/**
- * @brief Deletes a Vehicle by its ID.
- * @param ID The ID of the Vehicle to delete.
- * @return True if the deletion was successful, false otherwise.
- */
-bool Vehicles::deleteAtID(string ID){
-    if(head->vehicleID == ID){
-        deleteAtStart();
-        return true;
-    }
-    Vehicle *current = head;
-    Vehicle *previous = NULL;
-
-    while (current->next->next != NULL && current->vehicleID != ID) {
-        previous = current;
-        current = current->next;
-    }
-    previous->next = current->next;
-    // Delete the Vehicle
-    delete current;
-    return true;
-}
-
-/**
- * @brief Checks if the Vehicles list is empty.
- * @return True if the list is empty, false otherwise.
- */
-bool Vehicles::isEmpty(){
-    return head == NULL;
-}
-
-/**
- * @brief Prints the details of all Vehicles in the list.
- */
-void Vehicles::printVehicles(){
-    cout << endl;
-    Vehicle *temp = head;
-    while(temp != NULL){
-        cout << temp->vehicleID << " " << temp->priorityLevel << " -> ";
-        temp = temp->next;
-    }
-    cout << "NULL\n";
-}
-
-/**
- * @brief Finds if a Vehicle ID exists in the list.
- * @param vehicleID The ID of the Vehicle to find.
- * @return The index of the Vehicle in the list, or -1 if not found.
- */
-int Vehicles::findIDInVehicles(string vehicleID){
-    Vehicle *temp = head;
-    int index = -1;
-    while(temp != NULL){
-        index++;
-        if(temp->vehicleID == vehicleID){
-            break;
-        }
-        temp = temp->next;
-    }
-    if(temp != NULL)
-       return index; 
     return -1;
 }
 
-/**
- * @brief Loads and reads vehicle data from CSV files.
- */
+// Loads vehicle data from CSV files
 void Vehicles::loadAndReadCSVs() {
-    ifstream vehiclesFile("dataset/vehicles.csv");
-    ifstream emergencyVehiclesFile("dataset/emergency_vehicles.csv");
+    std::ifstream vehiclesFile("dataset/vehicles.csv");
+    std::ifstream emergencyVehiclesFile("dataset/emergency_vehicles.csv");
 
-    string line, vehicleID, startIntersection, endIntersection, priorityLevel;
+    std::string line, vehicleID, startIntersection, endIntersection, priorityLevel;
 
-    // Read vehicles.csv
+   
     if (vehiclesFile.is_open()) {
         getline(vehiclesFile, line); // Skip the header
         while (getline(vehiclesFile, line)) {
-            stringstream ss(line);
+            std::stringstream ss(line);
             getline(ss, vehicleID, ',');
             getline(ss, startIntersection, ',');
             getline(ss, endIntersection, ',');
+            
+            
             enqueue(vehicleID, startIntersection, endIntersection, "low");
         }
         vehiclesFile.close();
     }
 
-    // Read emergency_vehicles.csv
+  
     if (emergencyVehiclesFile.is_open()) {
         getline(emergencyVehiclesFile, line); // Skip the header
         while (getline(emergencyVehiclesFile, line)) {
-            stringstream ss(line);
+            std::stringstream ss(line);
             getline(ss, vehicleID, ',');
             getline(ss, startIntersection, ',');
             getline(ss, endIntersection, ',');
             getline(ss, priorityLevel, ',');
-            if(findIDInVehicles(vehicleID) == -1){
+            
+          
+            if (findIDInVehicles(vehicleID) == -1) {
                 enqueue(vehicleID, startIntersection, endIntersection, priorityLevel);
             }
         }
@@ -291,11 +198,10 @@ void Vehicles::loadAndReadCSVs() {
     }
 }
 
-/**
- * @brief Returns a copy of the head of the Vehicles list.
- * @return The head of the Vehicles list.
- */
+
+// Returns the head vehicle
 Vehicle* Vehicles::getHead() {
-    Vehicle* copyHead = new Vehicle(head->vehicleID, head->startIntersection, head->endIntersection, head->priorityLevel);
-    return copyHead;
+    return head;
 }
+
+
