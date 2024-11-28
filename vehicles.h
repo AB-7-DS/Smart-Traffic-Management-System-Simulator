@@ -4,7 +4,7 @@
 #include <string> // Ensure string header is included
 #include<limits>
 #include "vehicle.h"
-#include "reroute.h"
+// #include "reroute.h"
 
 // All functions in this class should use std::string as parameter types.
 class Vehicles {
@@ -28,10 +28,10 @@ public:
     void printVehicles();
     int findIDInVehicles(std::string vehicleID);
     void loadAndReadCSVs();
-    Vehicle* getHead();
-    bool rerouteVehicleByID(const std::string& vehicleID, RerouteManager& rerouteManager);
-    void recalculatePaths(RerouteManager& rerouteManager);
-    bool updatePathForVehicle(const std::string& vehicleID, const std::string& newPath);
+    Vehicle*& getHead();
+    // bool rerouteVehicleByID(const std::string& vehicleID, RerouteManager& rerouteManager);
+    // void recalculatePaths(RerouteManager& rerouteManager);
+    // bool updatePathForVehicle(const std::string& vehicleID, const std::string& newPath);
     
 };
 

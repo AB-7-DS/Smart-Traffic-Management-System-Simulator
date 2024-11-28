@@ -200,7 +200,7 @@ void Vehicles::loadAndReadCSVs() {
 
 
 // Returns the head vehicle
-Vehicle* Vehicles::getHead() {
+Vehicle*& Vehicles::getHead() {
     return head;
 }
 
