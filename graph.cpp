@@ -1,4 +1,4 @@
-#include "graph.h"
+#include "Graph.h"
 #include <fstream>
 #include<sstream>
 #include <iostream>

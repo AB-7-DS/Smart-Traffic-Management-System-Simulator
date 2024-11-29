@@ -2,6 +2,7 @@
 #include "accidents.cpp"
 #include "vehicle.cpp"
 #include "vehicles.cpp"
+#include "route.cpp"
 #include "congestionMonitoring.cpp"
 #include <iostream>
 #include <string>
@@ -15,17 +16,17 @@ using namespace std;
  * It demonstrates how to interact with the Graph and Accident_roads classes.
  */
 int main() {
-    // Create a graph for the road network
+    // Object Initialization
     Graph cityGraph;
-
-    // Load the road network from a CSV file
-    cityGraph.loadRoadData("dataset/road_network.csv");
-
-    // Create an instance of the Accident_roads class
+    Vehicles vehicles;
     Accident_roads accidentManager;
-
-    // Load accident or blocked road data and update the graph
+    GPS gps(&cityGraph);
+    CongestionMonitoring ht(vehicles.getHead());
+    // Loading Data  from a CSV file
+    cityGraph.loadRoadData("dataset/road_network.csv");
     accidentManager.loadRoadData(cityGraph);
+    vehicles.loadAndReadCSVs();
+   
     string start,end;
     int choice;
     do {
@@ -50,6 +51,7 @@ int main() {
             case 2:
                 break;
             case 3:
+                ht.printHashTable();
                 break;
             case 4:
                 accidentManager.displayBlockedRoads();
@@ -58,16 +60,22 @@ int main() {
             case 5:
                 break;
             case 6: {
-                std::cout << "Enter the start intersection to block: ";
-                std::cin >> start;
-                std::cout << "Enter the end intersection to block: ";
-                std::cin >> end;
+                cout << "Enter the start intersection to block: ";
+                cin >> start;
+                cout << "Enter the end intersection to block: ";
+                cin >> end;
 
                 // Use the Accident_roads member function to block the road
                 accidentManager.blockRoad(start, end, cityGraph);
                 break;
             }
             case 7:
+                cout << "Enter the start intersection to block: ";
+                cin >> start;
+                cout << "Enter the end intersection to block: ";
+                cin >> end;
+                gps.printAllPaths(start, end);
+
                 break;
             case 8:
                 cout << "Exiting Simulation. Goodbye!\n";
@@ -109,10 +117,6 @@ int main() {
     v2.moveForward("D");
     v2.printVehicle();
 
-    Vehicles vehicles;
-    vehicles.loadAndReadCSVs();
-    CongestionMonitoring ht(vehicles.getHead());
-    ht.printHashTable();
     return 0;
 }
 
