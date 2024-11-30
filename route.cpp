@@ -59,7 +59,7 @@ void GPS::findAllPathsDFS(Vertex* start, Vertex* end,
     // If we reached the end vertex, store the current path and total weight
     if (start == end) {
         if (allPathsCount >= MAX_VERTICES) {
-            cerr << "Error: Too many paths found, exceeding MAX_VERTICES!" << endl;
+            cerr << "The total possible paths found exceed MAX VERTICES" << endl;
             return;
         }
 
@@ -149,5 +149,59 @@ void GPS::printAllPaths(const string& startName, const string& endName) {
             cout << allPaths[i][j] << " ";
         }
         cout << "| Weight: " << totalWeight[i] << endl;
+    }
+}
+
+
+
+
+
+
+///rerouting for emergency vehicle
+void GPS::rerouteEmergencyVehicle(const string& startName, const string& endName) {
+    Vertex* start = graph->findVertex(startName);
+    Vertex* end = graph->findVertex(endName);
+
+    if (!start || !end) {
+        cout << "The intersections were not found for rerouting vehicle\n";
+        return;
+    }
+    string path[MAX_VERTICES];               // Array to store the current path
+    string allPaths[MAX_VERTICES][MAX_VERTICES]; // Array to store all possible paths
+    int totalWeight[MAX_VERTICES] = { 0 };            // Array to store total weights of paths
+    bool visited[MAX_VERTICES] = { false };        // Array to track visited vertices
+
+    int pathIndex = 0;      // Index for the current path
+    int allPathsCount = 0;  // Counter for all paths
+    int totalWeightCount = 0;  // Counter for total weights
+
+    // Start finding all paths using DFS
+    findAllPathsDFS(start, end, path, pathIndex, allPaths, allPathsCount, visited, totalWeight, totalWeightCount);
+
+    if (allPathsCount == 0) {
+        cout << "No path found between " << startName << " and " << endName << endl;
+        return;
+    }
+
+    // Find the path with the minimum weight
+    int minWeight = 5500000;
+    int minWeightIndex = -1;
+
+    for (int i = 0; i < totalWeightCount; i++) {
+        if (totalWeight[i] < minWeight) {
+            minWeight = totalWeight[i];
+            minWeightIndex = i;
+        }
+    }
+
+    if (minWeightIndex == -1) {
+        cout << "\nCould not determine the path to reroute to\n";
+        return;
+    }
+
+    // Print the least weight path
+    cout << "\nRerouted vehicle to\n ";
+    for (int j = 0; allPaths[minWeightIndex][j] != ""; j++) {
+        cout << allPaths[minWeightIndex][j] << " ";
     }
 }
