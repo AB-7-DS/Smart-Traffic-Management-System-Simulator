@@ -89,7 +89,7 @@ int main() {
 
     // Demonstrate Vehicle Simulation
     std::cout << "\n\nVehicle Simulation\n";
-    Vehicle v("V1", "A", "D", "high");
+    Vehicle v("V1", "A", "D", "High");
     v.printVehicle();
     std::cout << "\nMoving to next intersection...\n";
     v.moveForward("B");
@@ -119,5 +119,3 @@ int main() {
 
     return 0;
 }
-
-
