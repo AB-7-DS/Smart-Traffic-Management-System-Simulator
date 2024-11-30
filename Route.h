@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 #include <cstring>
-#include "Graph.h"  // Assuming you have a Graph class for managing vertices and edges
+#include "graph.h"  // Assuming you have a Graph class for managing vertices and edges
 
 /**
  * @class GPS
