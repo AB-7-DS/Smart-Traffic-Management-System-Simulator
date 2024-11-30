@@ -52,6 +52,7 @@ private:
                          std::string allPaths[][MAX_VERTICES], 
                          int& allPathsCount, bool visited[], 
                          int totalWeight[], int& totalWeightCount);
+   
 
 public:
     /**
@@ -73,6 +74,17 @@ public:
      * @param endName The name of the destination vertex.
      */
     void printAllPaths(const std::string& startName, const std::string& endName);
+    /*
+    * @brief Function to reroute an emergency vehicle around a blocked road.
+    *
+    * This function finds an alternate path for an emergency vehicle to reach its destination
+    * by avoiding a blocked road. It uses the printAllPaths function to find all possible paths
+    * and selects the shortest path that avoids the blocked road.
+    * 
+    * @param startName The name of the starting intersection.
+    * @param endName The name of the destination intersection.
+    */
+    void rerouteEmergencyVehicle(const string& startName, const string& endName);
 };
 
 #endif
