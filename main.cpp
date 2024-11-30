@@ -21,11 +21,11 @@ int main() {
     Vehicles vehicles;
     Accident_roads accidentManager;
     GPS gps(&cityGraph);
-    CongestionMonitoring ht(vehicles.getHead());
-    // Loading Data  from a CSV file
+    // Loading Data from a CSV file
     cityGraph.loadRoadData("dataset/road_network.csv");
     accidentManager.loadRoadData(cityGraph);
     vehicles.loadAndReadCSVs();
+    CongestionMonitoring ht(vehicles.getHead());
    
     string start,end;
     int choice;
