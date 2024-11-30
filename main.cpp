@@ -58,6 +58,12 @@ int main() {
                 accidentManager.displayUnderRepairRoads();
                 break;
             case 5:
+                cout << "Enter the start intersection to block: ";
+                cin >> start;
+                cout << "Enter the end intersection to block: ";
+                cin >> end;
+                //will added check function to check if vehicle is emergency
+                gps.rerouteEmergencyVehicle(start, end);
                 break;
             case 6: {
                 cout << "Enter the start intersection to block: ";
@@ -119,3 +125,5 @@ int main() {
 
     return 0;
 }
+
+
