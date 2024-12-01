@@ -16,6 +16,7 @@ class CongestionMaxHeap{
             RoadNode* mostCongested();
             void inorder(RoadNode* root);
             void inorder();
+            void heapifyDown(RoadNode* node);
             // void deleteMax();
             // ~CongestionMaxHeap();
 
