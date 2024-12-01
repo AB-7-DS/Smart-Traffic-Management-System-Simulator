@@ -10,12 +10,12 @@ const int HASH_TABLE_SIZE = 100;
  * 
  * 
  */
-struct HashNode {
+struct RoadNode {
     char path[2]; //< Start and end Intersection
     int carCount; //< The number of cars on the road
-    HashNode* right; //< Pointer for chaining in case of collisions
+    RoadNode* right; //< Pointer for chaining in case of collisions
 
-    HashNode(char s = '\0', char e = '\0', int v = 0) {
+    RoadNode(char s = '\0', char e = '\0', int v = 0) {
         path[0] = s;
         path[1] = e;
         carCount = v;
@@ -30,7 +30,7 @@ struct HashNode {
 class CongestionMonitoring { 
     
     private:
-        HashNode hashTable[HASH_TABLE_SIZE]; //< HashNode array
+        RoadNode hashTable[HASH_TABLE_SIZE]; //< RoadNode array
         const int hashTableSize; //< Hash table array size
 
         // private functions -----------------------------------------------------------

@@ -17,7 +17,7 @@ char CongestionMonitoring::getStart(int index, int right) {
     // invalid param check
     if (index >= HASH_TABLE_SIZE) return '\0';
 
-    HashNode* temp = &hashTable[index];
+    RoadNode* temp = &hashTable[index];
     
     // right > 0 and temp->right is not a nullptr
     while( right-- && temp->right) 
@@ -30,7 +30,7 @@ char CongestionMonitoring::getEnd(int index, int right) {
     // invalid param check
     if (index >= HASH_TABLE_SIZE) return '\0';
 
-    HashNode* temp = &hashTable[index];
+    RoadNode* temp = &hashTable[index];
     
     // right > 0 and temp->right is not a nullptr
     while( right-- && temp->right) 
@@ -41,13 +41,13 @@ char CongestionMonitoring::getEnd(int index, int right) {
 
 void CongestionMonitoring::addToTable(int index, char start, char end, int right) {
     // get the node at index
-    HashNode* temp = &hashTable[index];
+    RoadNode* temp = &hashTable[index];
     for (int i = 0; i<right; i++){
         if (temp->right)
             temp = temp->right;
         else {
             // add another node to the chain
-            temp->right = new HashNode();
+            temp->right = new RoadNode();
             temp = temp->right;
             break;
         }
@@ -112,13 +112,12 @@ void CongestionMonitoring::makeHashTable(Vehicle* vehiclesHead){
 }
 
 void CongestionMonitoring::updateHashTable(Vehicle* prevPos, Vehicle* currentPos) {
-    // To do
 }
 
 void CongestionMonitoring::printHashTable() {
     std::cout << std::endl;
     for (int i = 0; i < HASH_TABLE_SIZE; i++) {
-        HashNode* temp = &hashTable[i];
+        RoadNode* temp = &hashTable[i];
         while(temp) {
             if (temp->path[0] != '\0' && temp->path[1] != '\0') 
                 std::cout << temp->path[0] << " to  " << temp->path[1] << " -> Vehicles: " << temp->carCount << std::endl;
@@ -130,10 +129,10 @@ void CongestionMonitoring::printHashTable() {
 
 CongestionMonitoring::~CongestionMonitoring() {
     for (int i = 0; i < HASH_TABLE_SIZE; i++) {
-        HashNode* temp = &hashTable[i];
-        HashNode* temp2 = temp->right;
+        RoadNode* temp = &hashTable[i];
+        RoadNode* temp2 = temp->right;
         while(temp2) {
-            HashNode* del = temp2;
+            RoadNode* del = temp2;
             temp2 = temp2->right;
             delete del;
         }
