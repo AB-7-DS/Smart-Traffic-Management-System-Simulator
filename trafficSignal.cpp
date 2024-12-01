@@ -2,7 +2,7 @@
 #include <cctype>
 #include <iostream>
 
-TrafficSignal::TrafficSignal(std::string state, int intersectionId, int duration, int transitionTime) {
+TrafficSignal::TrafficSignal(std::string state, char intersectionId, int duration, int transitionTime) {
       // Convert the state to lowercase
       for (int i = 0; i < state.length(); i++)
             state[i] = static_cast<char>(std::tolower(state[i]));
@@ -16,6 +16,8 @@ TrafficSignal::TrafficSignal(std::string state, int intersectionId, int duration
       duration > 0 ? this->transitionTime = transitionTime : this->transitionTime = transitionTime * -1;
 
       this->intersectionId = intersectionId;
+
+      next = NULL;
 }
 
 std::string TrafficSignal::getState() {

@@ -4,6 +4,8 @@
 #include "vehicles.cpp"
 #include "route.cpp"
 #include "congestionMonitoring.cpp"
+#include "trafficSignal.cpp"
+#include "trafficLightsManagement.cpp"
 #include <iostream>
 #include <string>
 using namespace std;
@@ -15,6 +17,7 @@ using namespace std;
  * marks intersections as blocked based on accident data, and displays the updated road status.
  * It demonstrates how to interact with the Graph and Accident_roads classes.
  */
+
 int main() {
     // Object Initialization
     Graph cityGraph;

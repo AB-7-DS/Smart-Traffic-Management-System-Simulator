@@ -1,3 +1,6 @@
+
+#ifndef TRAFFIC_SIGNAL_H
+#define TRAFFIC_SIGNAL_H
 #include <string>
 
 /**
@@ -64,24 +67,27 @@
  * @brief Advance the state of the traffic signal to the next state in the sequence "red" -> "yellow" -> "green" -> "yellow" -> "red".
  */
 class TrafficSignal {
-      private:
+      public:
             std::string state; //<  "red", "yellow", "green"
-            int intersectionId; //< ID of the intersection for which the signal is
-            int duration; //< duration a state is to be maintained in seconds
             int transitionTime; //< the time the "yellow" state is maintained
 
-      public:
+            char intersectionId; //< ID of the intersection for which the signal is
+            int duration; //< duration a state is to be maintained in seconds
+            TrafficSignal* next; //< pointer to the next signal in the list
+
+
+
             /**
              * @brief Initializes a TrafficSignal instance with the specified state ("red", "yellow", or "green"), 
              * Intersection ID, and duration. 
              * Defaults to "red" state, -1 Intersection ID, and 60 seconds duration.
              * 
              * @param state string "red", "yellow" or "green". Default value is "red"
-             * @param intersectionId int ID of the intersection for which the signal is. Default value is -1
+             * @param intersectionId char ID of the intersection for which the signal is. Default value is '-'
              * @param duration int duration a state is to be maintained in seconds. Default value is 60
              * @param transitionTime int the time the "yellow" state is maintained. Default value is 5
              */
-            TrafficSignal(std::string state = "red", int intersectionId = -1, int duration = 60, int transitionTime = 5);
+            TrafficSignal(std::string state = "red", char intersectionId = '-', int duration = 60, int transitionTime = 5);
 
             /**
              * @brief Retrieves the current state of the traffic signal
@@ -132,3 +138,5 @@ class TrafficSignal {
              */
             void advanceState();
 };
+
+#endif
