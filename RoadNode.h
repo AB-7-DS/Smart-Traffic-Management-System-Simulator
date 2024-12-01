@@ -10,6 +10,7 @@ struct RoadNode {
     RoadNode* right; //< Pointer for chaining in case of collisions in hashtables. Points to right child in minheap
     RoadNode* left; //< Pointer for the left child in minheap
     RoadNode* parent; //< Pointer to the parent node in minheap
+    RoadNode* next; //< Pointer to the next node in the queue
     /**
      * @brief Constructor to initialize a RoadNode
      * @param s Start intersection
@@ -23,6 +24,7 @@ struct RoadNode {
         right = nullptr;
         left = nullptr;
         parent = nullptr;
+        next = nullptr;
     }
 };
 

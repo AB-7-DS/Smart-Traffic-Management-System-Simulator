@@ -126,15 +126,3 @@ void CongestionMonitoring::printHashTable() {
     }
 }
 
-
-CongestionMonitoring::~CongestionMonitoring() {
-    for (int i = 0; i < HASH_TABLE_SIZE; i++) {
-        RoadNode* temp = &hashTable[i];
-        RoadNode* temp2 = temp->right;
-        while(temp2) {
-            RoadNode* del = temp2;
-            temp2 = temp2->right;
-            delete del;
-        }
-    }
-}

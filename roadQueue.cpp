@@ -10,33 +10,30 @@ RoadNode* RoadQueue::dequeue(){
       if (isEmpty())
             return nullptr;
       RoadNode* temp = head;
-      temp->right = nullptr;
-      head = head->right;
+      head = head->next;      
       return temp;
-      
 }
 
 void RoadQueue::enqueue(RoadNode*& newNode){
-      RoadNode* nn = new RoadNode(newNode->path[0], newNode->path[1], newNode->carCount);
-      if(nn->carCount == 0)
+      if(newNode->carCount == 0)
             return;
-      nn->right = nullptr;
+      newNode->next = nullptr;
       if (head == NULL){
-            head = nn;
-            head->right = tail;
-            tail = nn;
+            head = newNode;
+            head->next = tail;
+            tail = newNode;
             return;
       }
-      tail->right = nn;
-      tail = nn;
-      tail->right = nullptr;
+      tail->next = newNode;
+      tail = newNode;
+      tail->next = nullptr;
 }
 
 void RoadQueue::printQueue(){
       RoadNode* temp = head;
       while(temp != NULL){
             std::cout << temp->path[0] << " to " << temp->path[1] << "\t";
-            temp = temp->right;
+            temp = temp->next;
       }
       std::cout << std::endl;
 }
