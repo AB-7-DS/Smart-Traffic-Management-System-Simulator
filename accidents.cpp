@@ -1,4 +1,3 @@
-// Accident_roads.cpp
 
 #include "accidents.h"
 #include "graph.h"

@@ -5,7 +5,7 @@
 #include <string>
 #include <cstring>
 #include "graph.h"  // Assuming you have a Graph class for managing vertices and edges
-
+using namespace std;
 /**
  * @class GPS
  * @brief Class for managing GPS navigation and finding all possible paths between two vertices.
