@@ -7,7 +7,7 @@
 #include "congestionMonitoring.cpp"
 #include "trafficSignal.cpp"
 #include "trafficLightsManagement.cpp"
-
+#include "visualizer.cpp"
 #include <iostream>
 #include <string>
 using namespace std;
