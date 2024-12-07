@@ -1,9 +1,10 @@
 Intersection1,Intersection2,Status
-B,C,Blocked
+
 D,E,Clear
 C,D,Under Repair
 A,F,Blocked
 E,F,Clear
+B,C,Blocked
 F,G,Clear
 H,I,Blocked
 C,H,Under Repair
@@ -22,21 +23,3 @@ T,U,Clear
 U,V,Under Repair
 W,X,Blocked
 Y,Z,Clear
-,,
-,,
-,,
-,,
-,,
-,,
-,,
-,,
-,,
-,,
-,,
-,,
-,,
-,,
-,,
-,,
-,,
-,,

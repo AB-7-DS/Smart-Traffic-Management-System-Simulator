@@ -107,6 +107,76 @@ void GPS::findAllPathsDFS(Vertex* start, Vertex* end,
     visited[startIndex] = false;
 }
 
+void GPS::findAllOptimalPaths(Vertex* start, Vertex* end, 
+                           string path[], int pathIndex, 
+                           string allPaths[][MAX_VERTICES], 
+                           int& allPathsCount, bool visited[], 
+                           int totalWeight[], int& totalWeightCount) {
+
+    int startIndex = getVertexIndex(start->name);
+
+    if (visited[startIndex]) return;  // Prevent revisiting nodes
+
+    visited[startIndex] = true;  // Mark the current vertex as visited
+    path[pathIndex] = start->name;  // Add the current vertex to the path
+    pathIndex++;
+
+    // If we reached the end vertex, store the current path and total weight
+    if (start == end) {
+        if (allPathsCount >= MAX_VERTICES) {
+          
+            return;
+        }
+
+        int currentTotalWeight = 0; // To calculate total weight of this path
+
+        // Store the current path
+        for (int i = 0; i < pathIndex; i++) {
+            allPaths[allPathsCount][i] = path[i];
+        }
+
+        // Calculate total weight of the path
+        for (int i = 0; i < pathIndex - 1; i++) {
+            Vertex* current = graph->findVertex(path[i]);
+            EdgeNode* edgeNode = current->edges;
+            while (edgeNode) {
+                if (edgeNode->edge->destination->name == path[i + 1]) {
+                    // Only add weight if the edge is not blocked
+                    if (!edgeNode->edge->isBlocked()) {
+                        currentTotalWeight += edgeNode->edge->travelTime;  // Add edge weight
+                    }
+                    break;
+                }
+                edgeNode = edgeNode->next;
+            }
+        }
+
+        // Store the total weight of the current path
+        totalWeight[totalWeightCount] = currentTotalWeight;
+        totalWeightCount++;
+
+        allPathsCount++;  // Increment path count
+    } else {
+        // Explore all adjacent vertices (neighbors)
+        EdgeNode* edgeNode = start->edges;
+        while (edgeNode) {
+            Vertex* neighbor = edgeNode->edge->destination;
+            int neighborIndex = getVertexIndex(neighbor->name);
+
+            // Skip blocked intersections (if vertex is blocked), visited vertices, and blocked edges
+            if (!visited[neighborIndex] && !edgeNode->edge->isBlocked()) {
+                findAllOptimalPaths(neighbor, end, path, pathIndex, allPaths, allPathsCount, visited, totalWeight, totalWeightCount);
+            }
+            edgeNode = edgeNode->next;
+        }
+    }
+
+    // Backtrack: unmark the current vertex as visited
+    pathIndex--;
+    visited[startIndex] = false;
+}
+
+
 /**
  * @brief Function to print all paths between two vertices along with their total weights.
  * 
@@ -135,11 +205,11 @@ void GPS::printAllPaths(const string& startName, const string& endName) {
     int pathIndex = 0;      // Index for the current path
     int allPathsCount = 0;  // Counter for all paths
     int totalWeightCount = 0;  // Counter for total weights
-
+    
     // Start finding all paths using DFS
     findAllPathsDFS(start, end, path, pathIndex, allPaths, allPathsCount, visited, totalWeight, totalWeightCount);
 
-    cout << "Total Paths Found: " << allPathsCount << endl;
+   
     cout << "Paths: " << endl;
 
     // Print each path and its total weight
@@ -176,7 +246,7 @@ void GPS::rerouteEmergencyVehicle(const string& startName, const string& endName
     int totalWeightCount = 0;  // Counter for total weights
 
     // Start finding all paths using DFS
-    findAllPathsDFS(start, end, path, pathIndex, allPaths, allPathsCount, visited, totalWeight, totalWeightCount);
+    findAllOptimalPaths(start, end, path, pathIndex, allPaths, allPathsCount, visited, totalWeight, totalWeightCount);
 
     if (allPathsCount == 0) {
         cout << "No path found between " << startName << " and " << endName << endl;
@@ -200,7 +270,8 @@ void GPS::rerouteEmergencyVehicle(const string& startName, const string& endName
     }
 
     // Print the least weight path
-    cout << "\nRerouted vehicle to\n ";
+    cout << "\nEmergency Vehicle is being routed.........\n ";
+    cout<<"Emergency Vehicle Path :";
     for (int j = 0; allPaths[minWeightIndex][j] != ""; j++) {
         cout << allPaths[minWeightIndex][j] << " ";
     }

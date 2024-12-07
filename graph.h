@@ -3,7 +3,7 @@
 
 #include <string>
 #include <iostream>
-
+using namespace std;
 // Forward declaration of the Accident_roads class
 class Accident_roads;
 
@@ -17,7 +17,7 @@ class Accident_roads;
 class Vertex {
 public:
     std::string name;         /**< Intersection name */
-    bool blocked;             /**< Whether the intersection is blocked or not */
+    
     struct EdgeNode* edges;   /**< Linked list of edges (adjacency list) */
 
     /**
@@ -26,17 +26,7 @@ public:
      */
     Vertex(const std::string& name);
 
-    /**
-     * @brief Checks if the intersection is blocked.
-     * @return true if the intersection is blocked, false otherwise.
-     */
-    bool isBlocked() const;
-
-    /**
-     * @brief Sets the blocked status of the intersection.
-     * @param status The new blocked status (true for blocked, false for not blocked).
-     */
-    void setBlocked(bool status);
+  
 };
 
 /**
@@ -50,7 +40,31 @@ class Edge {
 public:
     Vertex* destination;      /**< Destination vertex (intersection) */
     int travelTime;           /**< Travel time to the destination */
+    bool blocked;             /**< Whether the Edge is blocked or not */
+    bool underRepaired;
+  /**
+     * @brief Checks if the edge is blocked.
+     * @return true if the edge is blocked, false otherwise.
+     */
+    bool isBlocked() const;
+    /**
+     * @brief Checks if the Edge is under Repaired.
+     * @return true if the intersection is under Repaired, false otherwise.
+     */
+    bool isUnderRepaired() const;
 
+
+    /**
+     * @brief Sets the blocked status of the intersection.
+     * @param status The new blocked status (true for blocked, false for not blocked).
+     */
+    void setBlocked(bool status);
+     /**
+     * @brief Sets the blocked status of the intersection.
+     * @param status The new blocked status (true for blocked, false for not blocked).
+     */
+    void setUnderRepaired(bool status);
+    
     /**
      * @brief Constructs an Edge object.
      * @param destination The destination intersection.
@@ -160,17 +174,21 @@ public:
      * @param intersection2 The name of the second intersection.
      * @param isBlocked The new blocked status (true if blocked, false if unblocked).
      */
-    void markIntersectionsAsBlocked(const std::string& intersection1, const std::string& intersection2, bool isBlocked);
-
+   void markEdgeAsBlocked(const string& intersection1, const string& intersection2, bool isBlocked) ;
+    /**
+     * @brief Marks the specified Edges as underRepair or not.
+     * 
+     * @param intersection1 The name of the first intersection.
+     * @param intersection2 The name of the second intersection.
+     * @param isUnderRepaired The new blocked status (true if blocked, false if unblocked).
+     */
+   void markEdgesAsUnderRepaired(const string& intersection1, const string& intersection2, bool isUnderRepaired);
     /**
      * @brief Displays the blocked intersections in the graph.
      */
-    void displayBlockedIntersections();
+    void displayBlockedEdges();
 
-    /**
-     * @brief Displays the status of each intersection in the graph.
-     */
-    void displayIntersectionStatus();
+   
 
     /**
      * @brief Adds an edge to the specified vertex.
@@ -190,7 +208,7 @@ public:
      * @param nodeName The name of the vertex to check.
      * @return true if the vertex is blocked, false otherwise.
      */
-    bool isBlocked(const std::string& nodeName);
+bool isBlocked(const std::string& nodeName1, const std::string& nodeName2);
 
     /**
      * @brief Gets the neighbors of a specified vertex.

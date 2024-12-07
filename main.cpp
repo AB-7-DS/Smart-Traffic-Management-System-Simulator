@@ -1,12 +1,13 @@
-#include "graph.h"
-#include "accidents.h"
-#include "vehicle.h"
-#include "vehicles.h"
-#include "Route.h"
-#include "RoadNode.h"
-#include "congestionMonitoring.h"
-#include "trafficSignal.h"
-#include "trafficLightManagement.h"
+#include "graph.cpp"
+#include "accidents.cpp"
+#include "vehicle.cpp"
+#include "vehicles.cpp"
+#include "route.cpp"
+#include "roadQueue.cpp"
+#include "congestionMonitoring.cpp"
+#include "trafficSignal.cpp"
+#include "trafficLightsManagement.cpp"
+
 #include <iostream>
 #include <string>
 using namespace std;
@@ -51,6 +52,7 @@ int main() {
         switch (choice) {
             case 1:
                 cityGraph.printAdjacencyList();
+                cityGraph.displayRoadStatuses();
                 break;
             case 2:
                 break;
@@ -80,9 +82,9 @@ int main() {
                 break;
             }
             case 7:
-                cout << "Enter the start intersection to block: ";
+                cout << "Enter the start intersection : ";
                 cin >> start;
-                cout << "Enter the end intersection to block: ";
+                cout << "Enter the end intersection : ";
                 cin >> end;
                 gps.printAllPaths(start, end);
 
@@ -100,36 +102,7 @@ int main() {
     Visualizer visualizer;
     visualizer.drawSimulation(cityGraph, vehicles);
     
-    // Demonstrate Vehicle Simulation
-    std::cout << "\n\nVehicle Simulation\n";
-    Vehicle v("V1", "A", "D", "High");
-    v.printVehicle();
-    std::cout << "\nMoving to next intersection...\n";
-    v.moveForward("B");
-    v.printVehicle();
-    std::cout << "\nMoving forward without specifying the next intersection...\n";
-    v.moveForward();
-    v.printVehicle();
-    std::cout << "\nNothing happens if the path is not preset...\n";
-    std::cout << "\nMoving to next intersection...\n";
-    v.moveForward("C");
-    v.printVehicle();
-
-    std::cout << "\nNow making another vehicle with a preset path...\n";
-    Vehicle v2("V2", "A", "F", "low");
-    v2.setPath("ABC");
-    std::cout << "Vehicle 2's path is preset to A -> B -> C\n";
-    v2.printPath();
-    v2.printVehicle();
-    std::cout << "\nMoving to next intersection...\n";
-    v2.moveForward();
-    v2.printVehicle();
-
-    std::cout << "\nThe vehicle with a preset path will not deviate from the path even if you specify the next intersection...\n";
-    std::cout << "Moving to the next intersection (D)...\n";
-    v2.moveForward("D");
-    v2.printVehicle();
-
+    
     return 0;
 }
 

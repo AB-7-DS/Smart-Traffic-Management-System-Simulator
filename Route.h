@@ -16,7 +16,7 @@ using namespace std;
 class GPS {
 private:
     Graph* graph;  ///< Pointer to the Graph object
-    static const int MAX_VERTICES = 100;  ///< Maximum number of vertices
+    static const int MAX_VERTICES = 250;  ///< Maximum number of vertices
     std::string vertexNames[MAX_VERTICES];  ///< Array to store vertex names
     int vertexCount = 0;  ///< Counter for the number of vertices
 
@@ -85,6 +85,11 @@ public:
     * @param endName The name of the destination intersection.
     */
     void rerouteEmergencyVehicle(const string& startName, const string& endName);
+    void findAllOptimalPaths(Vertex* start, Vertex* end, 
+                           string path[], int pathIndex, 
+                           string allPaths[][MAX_VERTICES], 
+                           int& allPathsCount, bool visited[], 
+                           int totalWeight[], int& totalWeightCount);
 };
 
 #endif

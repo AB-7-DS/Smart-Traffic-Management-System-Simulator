@@ -3,20 +3,30 @@
 #include<sstream>
 #include <iostream>
 #include <string>
+using namespace std;
 
 // Vertex class definition
-Vertex::Vertex(const std::string& name) : name(name), blocked(false), edges(nullptr) {}
+Vertex::Vertex(const std::string& name) : name(name),  edges(nullptr) {}
 
-bool Vertex::isBlocked() const {
+// Edge class definition
+Edge::Edge(Vertex* destination, int travelTime) : destination(destination),blocked(false),underRepaired(false), travelTime(travelTime) {}
+
+
+bool Edge::isBlocked() const {
     return blocked;
 }
 
-void Vertex::setBlocked(bool status) {
+void Edge::setBlocked(bool status) {
     blocked = status;
 }
 
-// Edge class definition
-Edge::Edge(Vertex* destination, int travelTime) : destination(destination), travelTime(travelTime) {}
+bool Edge::isUnderRepaired() const {
+    return underRepaired;
+}
+
+void Edge::setUnderRepaired(bool status) {
+    underRepaired = status;
+}
 
 // EdgeNode class definition
 EdgeNode::EdgeNode(Edge* edge) : edge(edge), next(nullptr) {}
@@ -156,21 +166,38 @@ void Graph::loadRoadData(const std::string& filename) {
 
     file.close();
 }
-// Display the status of all roads (edges) in the graph
 void Graph::displayRoadStatuses() {
     VertexNode* currentVertexNode = headVertex;
+
+    // Iterate through each vertex in the graph
     while (currentVertexNode) {
         Vertex* vertex = currentVertexNode->vertex;
-        std::cout << "Vertex: " << vertex->name << "\n";
+
+        // Display the vertex name (intersection) and start the road status display
+        std::cout << vertex->name << " -> ";
+
         EdgeNode* currentEdgeNode = vertex->edges;
+
+        // Print all edges for the current vertex
         while (currentEdgeNode) {
             Edge* edge = currentEdgeNode->edge;
-            std::cout << "  -> " << edge->destination->name << " (Travel time: " << edge->travelTime << ")\n";
+
+            // Display the destination vertex name and the road status (blocked or open)
+            std::cout << "(" << edge->destination->name 
+                      << ", " << (edge->isBlocked() ? "Blocked)" : (edge->isUnderRepaired()?"Under Repair)":"Open)"));
+
             currentEdgeNode = currentEdgeNode->next;
+
+            // Print a comma if there are more edges for this vertex
+            if (currentEdgeNode) std::cout << ", ";
         }
+        std::cout << std::endl;
+
         currentVertexNode = currentVertexNode->next;
     }
 }
+
+
 
 // Add an edge to a vertex's adjacency list
 void Graph::addEdgeToVertex(Vertex* vertex, Edge* edge) {
@@ -178,56 +205,80 @@ void Graph::addEdgeToVertex(Vertex* vertex, Edge* edge) {
     newEdgeNode->next = vertex->edges;
     vertex->edges = newEdgeNode;
 }
-
-// Mark intersections as blocked in the graph
-void Graph::markIntersectionsAsBlocked(const std::string& intersection1, const std::string& intersection2, bool isBlocked) {
+void Graph::markEdgesAsUnderRepaired(const std::string& intersection1, const std::string& intersection2, bool isUnderRepaired) {
     Vertex* v1 = findVertex(intersection1);
     Vertex* v2 = findVertex(intersection2);
 
-    // Mark both intersections as blocked if applicable
-    if (v1) v1->setBlocked(isBlocked);
-    if (v2) v2->setBlocked(isBlocked);
+    if (!v1 || !v2) {
+        std::cerr << "One or both vertices not found!" << std::endl;
+        return;
+    }
+
+    EdgeNode* edgeCurrent = v1->edges;
+    while (edgeCurrent) {
+        if (edgeCurrent->edge->destination == v2) {
+            edgeCurrent->edge->setUnderRepaired(isUnderRepaired);
+            return;
+        }
+        edgeCurrent = edgeCurrent->next;
+    }
+    std::cerr << "Edge not found between " << intersection1 << " and " << intersection2 << std::endl;
+}
+
+// Mark intersections as blocked in the graph
+void Graph::markEdgeAsBlocked(const std::string& intersection1, const std::string& intersection2, bool isBlocked) {
+    Vertex* v1 = findVertex(intersection1);
+    Vertex* v2 = findVertex(intersection2);
+
+    if (!v1 || !v2) {
+        std::cerr << "One or both vertices not found!" << std::endl;
+        return;
+    }
+
+    EdgeNode* edgeCurrent = v1->edges;
+    while (edgeCurrent) {
+        if (edgeCurrent->edge->destination == v2) {
+            edgeCurrent->edge->blocked = isBlocked;
+            return;
+        }
+        edgeCurrent = edgeCurrent->next;
+    }
+    std::cerr << "Edge not found between " << intersection1 << " and " << intersection2 << std::endl;
 }
 
 // Display the blocked intersections
-void Graph::displayBlockedIntersections() {
-    std::cout << "Blocked Intersections:\n";
+void Graph::displayBlockedEdges() {
+    std::cout << "Blocked Edges:\n";
 
     // Traverse the linked list of vertices
     VertexNode* current = headVertex;
-    bool foundBlocked = false;  // To track if any blocked intersection is found
+    bool foundBlocked = false;  // To track if any blocked edge is found
 
     while (current) {
-        if (current->vertex->isBlocked()) {
-            std::cout << "- " << current->vertex->name << " is blocked.\n";
-            foundBlocked = true;
+        Vertex* vertex = current->vertex; // Get the current vertex
+        EdgeNode* edgeCurrent = vertex->edges; // Traverse the edges of the current vertex
+
+        while (edgeCurrent) {
+            // Check if the edge is blocked
+            if (edgeCurrent->edge->isBlocked()) {
+                std::cout << "- Edge from " << vertex->name << " to " 
+                          << edgeCurrent->edge->destination->name << " is blocked.\n";
+                foundBlocked = true;
+            }
+            edgeCurrent = edgeCurrent->next; // Move to the next edge
         }
+
         current = current->next;  // Move to the next vertex
     }
 
     if (!foundBlocked) {
-        std::cout << "No intersections are currently blocked.\n";
+        std::cout << "No edges are currently blocked.\n";
     }
 }
+
 /////////////////////////////////////////////////////////////////////////
 
-void Graph::displayIntersectionStatus()  {
-    // Traverse through all vertices and display their status
-    VertexNode* current = headVertex;  // Assuming headVertex is the starting point of the vertices linked list
-    
-    std::cout << "Intersection Status:\n";
-    while (current != nullptr) {
-        // Check if the current vertex is blocked
-        std::cout << "Intersection: " << current->vertex->name << " - ";
-        if (current->vertex->isBlocked()) {
-            std::cout << "Blocked\n";
-        } else {
-            std::cout << "Open\n";
-        }
-        current = current->next;  // Move to the next vertex
-    }
-    
-}
+
 void Graph::printAdjacencyList() {
     VertexNode* currentVertexNode = headVertex;
 
@@ -241,7 +292,7 @@ void Graph::printAdjacencyList() {
         // Print all edges for the current vertex
         while (currentEdgeNode) {
             Edge* edge = currentEdgeNode->edge;
-            std::cout << "(" << edge->destination->name << ", " << edge->travelTime << " min)";
+            std::cout << "(" << edge->destination->name << ", " << edge->travelTime << ")";
             currentEdgeNode = currentEdgeNode->next;
             if (currentEdgeNode) std::cout << ", ";
         }
@@ -250,14 +301,27 @@ void Graph::printAdjacencyList() {
         currentVertexNode = currentVertexNode->next;
     }
 }
-// Checks if a vertex (node) is blocked
-bool Graph::isBlocked(const std::string& nodeName) {
-    Vertex* vertex = findVertex(nodeName); // Find the vertex
-    if (vertex) {
-        return vertex->isBlocked();  // Return the blocked status of the vertex
+// Checks if an edge between two vertices (nodes) is blocked
+bool Graph::isBlocked(const std::string& nodeName1, const std::string& nodeName2) {
+    Vertex* vertex1 = findVertex(nodeName1); // Find the first vertex
+    Vertex* vertex2 = findVertex(nodeName2); // Find the second vertex
+
+    if (!vertex1 || !vertex2) {
+        return false; // If either vertex is not found, return false
     }
-    return false; // If the vertex is not found, return false
+
+    // Check if the edge from vertex1 to vertex2 is blocked
+    EdgeNode* edgeCurrent = vertex1->edges;
+    while (edgeCurrent) {
+        if (edgeCurrent->edge->destination == vertex2) {
+            return edgeCurrent->edge->isBlocked(); // Return the blocked status of the edge
+        }
+        edgeCurrent = edgeCurrent->next;
+    }
+
+    return false; // If no edge is found between the vertices, return false
 }
+
 
 int Graph::getVertexCount() {
     int count = 0;

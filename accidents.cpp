@@ -55,6 +55,7 @@ void Accident_roads::loadRoadData(Graph& graph) {
                         temp = temp->next;  // Traverse to the end of the list
                     }
                     temp->next = newNode;  // Insert the new node at the end
+                    graph.markEdgeAsBlocked(intersection1, intersection2, true);
                 }
             } else if (status == "Under Repair") {
                 // Insert under repair intersections in the separate list at the end
@@ -66,11 +67,13 @@ void Accident_roads::loadRoadData(Graph& graph) {
                         temp = temp->next;  // Traverse to the end of the list
                     }
                     temp->next = newNode;  // Insert the new node at the end
+                    graph.markEdgesAsUnderRepaired(intersection1, intersection2, true);
                 }
+                
             }
 
-            // Update the graph's vertices' blocked status (mark as blocked for both Blocked and Under Repair)
-            graph.markIntersectionsAsBlocked(intersection1, intersection2, true);
+            
+            
         }
     }
 
@@ -112,7 +115,7 @@ void Accident_roads::blockRoad(const std::string& start, const std::string& end,
     }
 
     // Mark the intersections as blocked in the graph
-    cityGraph.markIntersectionsAsBlocked(start, end, true);
+    cityGraph.markEdgeAsBlocked(start, end, true);
 
     // Add the blocked road to the accident manager
     AccidentNode* newBlockedRoad = new AccidentNode(start, end, true);
