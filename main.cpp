@@ -96,7 +96,10 @@ int main() {
 
         cout << endl; // Line break for better readability
     } while (choice != 8);
-
+    
+    Visualizer visualizer;
+    visualizer.drawSimulation(cityGraph, vehicles);
+    
     // Demonstrate Vehicle Simulation
     std::cout << "\n\nVehicle Simulation\n";
     Vehicle v("V1", "A", "D", "High");
