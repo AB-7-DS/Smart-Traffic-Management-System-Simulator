@@ -42,7 +42,7 @@ int main() {
     maxHeap.makeHeap(ht.hashTable, HASH_TABLE_SIZE);    
     
     cout << "\nmost congested road: " << maxHeap.mostCongested()->path[0] << maxHeap.mostCongested()->path[1]<< endl;
-    string start,end;
+    string start,end,path;
     int choice;
     do {
         // Display the menu
@@ -80,7 +80,8 @@ int main() {
                 cout << "Enter the end intersection to block: ";
                 cin >> end;
                 //will added check function to check if vehicle is emergency
-                gps.rerouteEmergencyVehicle(start, end);
+                path = gps.rerouteEmergencyVehicle(start, end);
+                cout << "The new path for the emergency vehicle is: " << path << endl;
                 break;
             case 6: {
                 cout << "Enter the start intersection to block: ";
@@ -110,15 +111,19 @@ int main() {
         cout << endl; // Line break for better readability
     } while (choice != 8);
     
-    //Visualizer visualizer;
-   // visualizer.drawSimulation(cityGraph, vehicles);
-    
-    //  updated congestion monitoring system and vehicles class so now the path can be preset
-    // made a function get Travel time in congestion monitoring class with two overloads
-    // added timer to the visualizer class
-    // implemented a function to congestion monitoring class to get the number of congestion events for performance metrics
-    // made the signal times change based on the congestion monitoring data
-    // for performance metrics for traffic signal effinciency, it displays the update green time everytime the signal time is updated
+    Visualizer visualizer;
+    Vehicle *temp = vehicles.getHead();
+    while(temp!=NULL){
+        //find best path for all vehicles
+        string start = temp->startIntersection;
+        string end = temp->endIntersection;
+        string path = (gps.rerouteEmergencyVehicle(start,end));
+        if(path!=""){
+        temp->setPath(path);
+        }
+        temp = temp->next;
+    }
+    visualizer.drawSimulation(cityGraph, vehicles);
     return 0;
 }
 
