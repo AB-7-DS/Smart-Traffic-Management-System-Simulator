@@ -31,6 +31,8 @@ int main() {
     accidentManager.loadRoadData(cityGraph);
     vehicles.loadAndReadCSVs();
     CongestionMonitoring ht(vehicles.getHead());
+    TrafficLightManagement traffic;
+    traffic.makeTrafficSignals();
    
     string start,end;
     int choice;
@@ -55,6 +57,7 @@ int main() {
                 cityGraph.displayRoadStatuses();
                 break;
             case 2:
+                traffic.printGreenTimes();
                 break;
             case 3:
                 ht.printHashTable();
@@ -99,10 +102,10 @@ int main() {
         cout << endl; // Line break for better readability
     } while (choice != 8);
     
-    Visualizer visualizer;
-    visualizer.drawSimulation(cityGraph, vehicles);
+    //Visualizer visualizer;
+   // visualizer.drawSimulation(cityGraph, vehicles);
     
-    
+     
     return 0;
 }
 
