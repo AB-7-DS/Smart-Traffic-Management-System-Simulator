@@ -5,6 +5,7 @@
 #include "Route.h"
 #include "roadQueue.h"
 #include "congestionMonitoring.h"
+#include "congestionMaxHeap.h"
 #include "trafficSignal.h"
 #include "trafficLightManagement.h"
 #include "visualizer.h"
@@ -32,9 +33,15 @@ int main() {
     vehicles.loadAndReadCSVs();
     vehicles.addPaths(gps);
     CongestionMonitoring ht(vehicles.getHead());
+    ht.makeHashTable(vehicles.getHead());
+    ht.makeHashTable(vehicles.getHead());
+
     TrafficLightManagement traffic;
     traffic.makeTrafficSignals();
-   
+    CongestionMaxHeap maxHeap;
+    maxHeap.makeHeap(ht.hashTable, HASH_TABLE_SIZE);    
+    
+    cout << "\nmost congested road: " << maxHeap.mostCongested()->path[0] << maxHeap.mostCongested()->path[1]<< endl;
     string start,end;
     int choice;
     do {
@@ -106,7 +113,12 @@ int main() {
     //Visualizer visualizer;
    // visualizer.drawSimulation(cityGraph, vehicles);
     
-     
+    //  updated congestion monitoring system and vehicles class so now the path can be preset
+    // made a function get Travel time in congestion monitoring class with two overloads
+    // added timer to the visualizer class
+    // implemented a function to congestion monitoring class to get the number of congestion events for performance metrics
+    // made the signal times change based on the congestion monitoring data
+    // for performance metrics for traffic signal effinciency, it displays the update green time everytime the signal time is updated
     return 0;
 }
 

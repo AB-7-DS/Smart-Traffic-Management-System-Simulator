@@ -113,3 +113,7 @@ void Visualizer::drawVehicles(Vehicles &vehicles, const std::string &intersectio
         currentVehicle = currentVehicle->next;
     }
 }
+ 
+float Visualizer::getElapsedTimeInSeconds() {
+    return clock.getElapsedTime().asSeconds();
+}

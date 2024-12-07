@@ -84,6 +84,10 @@ CongestionMonitoring::CongestionMonitoring(Vehicle* vehiclesHead) : hashTableSiz
         std::cerr << "No vehicle found" << std::endl;
         return;
     }
+    for (int i = 0; i < HASH_TABLE_SIZE; i++)         
+        hashTable[i].right = nullptr;
+    
+
     makeHashTable(vehiclesHead);
 }
 
@@ -134,17 +138,68 @@ void CongestionMonitoring::printHashTable() {
 
 void CongestionMonitoring::deleteTable() {
     for (int i = 0; i < HASH_TABLE_SIZE; i++) {
-        hashTable[i].carCount = 0;
-        hashTable[i].path[0] = '\0';
         RoadNode* temp = hashTable[i].right;
-        while(temp) {
+        while (temp) {
             RoadNode* temp2 = temp;
             temp = temp->right;
             delete temp2;
+            temp2 = nullptr;
         }
+        hashTable[i].right = nullptr;
+        hashTable[i].carCount = 0;  
+        hashTable[i].path[0] = '\0';
+        hashTable[i].path[1] = '\0';
     }
 }
 
-CongestionMonitoring::~CongestionMonitoring() {
-    deleteTable();
+
+int CongestionMonitoring::getTravelTime(char start, char end, int prevTime) {
+    RoadNode* temp = findRoadNode(start, end);
+    if (!temp) {
+        std::cerr << "No road found" << std::endl;
+        return 0;
+    }
+    bool isPeakHour = false;
+    if (prevTime >= 3600 && prevTime <= 7200) isPeakHour = true;
+    int carCount = temp->carCount;
+
+    int time = prevTime;
+    
+    if (carCount < 5) time  = time;
+    else time += time*carCount;
+
+    if (!isPeakHour) time /= 2;
+    return time;
+}
+
+int CongestionMonitoring::getTravelTime(char start, char end, Graph& cityGraph) {
+    RoadNode* temp = findRoadNode(start, end);
+    string s = ""; s += start;
+    string e = ""; e += end;
+    int prevTime = cityGraph.getEdgeWeight(s, e);
+    return getTravelTime(start, end, prevTime);
+}
+
+RoadNode* CongestionMonitoring::findRoadNode(char start, char end) {
+    int index = hashFunction(start, end);
+    RoadNode* temp = &hashTable[index];
+    while(temp) {
+        if (temp->path[0] == start && temp->path[1] == end) {
+            return temp;
+        }
+        temp = temp->right;
+    }
+    return nullptr;
+}
+
+int CongestionMonitoring::numberOfCongestionEvents() {
+    int count = 0;
+    for (int i = 0; i < HASH_TABLE_SIZE; i++) {
+        RoadNode* temp = &hashTable[i];
+        while(temp) {
+            if (temp->carCount > 5) count++;
+            temp = temp->right;
+        }
+    }
+    return count;
 }

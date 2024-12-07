@@ -35,7 +35,7 @@ class TrafficLightManagement {
              * 
              * @param congestionMonitoring The congestion monitoring hash table.
              */
-            void updateTrafficSignals(CongestionMonitoring* congestionMonitoring);
+            void updateTrafficSignals(CongestionMonitoring& ht);
             /**
              * @brief Adds a signal to the list of traffic signals.
              * 
@@ -47,6 +47,13 @@ class TrafficLightManagement {
              * 
              */
             void printGreenTimes();
+            /**
+             * @brief Returns the signal for a given intersection.
+             * 
+             * @param intersection The intersection for which the signal is to be returned.
+             * @return TrafficSignal* The signal for the given intersection.
+             */
+            TrafficSignal* getSignal(std::string intersection);
 };
 
 #endif

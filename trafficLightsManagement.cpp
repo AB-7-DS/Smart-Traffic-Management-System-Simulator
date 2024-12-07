@@ -44,7 +44,25 @@ void TrafficLightManagement::addSignal( TrafficSignal* signal){
       temp->next = signal;
 }
 
-void TrafficLightManagement::updateTrafficSignals(CongestionMonitoring* congestionMonitoring){
+void TrafficLightManagement::updateTrafficSignals(CongestionMonitoring& ht){
+      for(int i = 0; i< HASH_TABLE_SIZE; i++) {
+            RoadNode* temp = &ht.hashTable[i];
+            while(temp) {
+                  // only chagnge the signal time if the car count is greater than 5
+                  if(temp->carCount > 5)
+                  if (temp->path[0] != '\0' && temp->path[1] != '\0') {
+                        string intersection = "";
+                        intersection += temp->path[0];
+                        TrafficSignal* signal = getSignal(intersection);
+                        if (signal != NULL) {
+                              signal->duration = signal->duration + temp->carCount;
+                              cout << "Intersection " << intersection << " Green Time: " << signal->duration << "s (updated)" << endl;
+                        }
+                        
+                  }
+                  temp = temp->right;
+            }
+      }
 }
 
 
@@ -55,4 +73,13 @@ void TrafficLightManagement::printGreenTimes(){
             temp = temp->next;
       }
      
+}
+TrafficSignal* TrafficLightManagement::getSignal(string intersection) {
+      TrafficSignal* temp = headSignal;
+      while (temp) {
+            if (temp->intersectionId == intersection[0])
+                  return temp;
+            temp = temp->next;
+      }
+      return nullptr;
 }

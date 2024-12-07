@@ -16,7 +16,8 @@ private:
     sf::Font font;
     sf::Texture roadTexture;
     sf::Texture vehicleTexture;
-    
+    sf::Clock clock; //<Measures elapsed time
+
 public:
 /**
  * @class Visualizer
@@ -52,5 +53,8 @@ public:
    void drawVehicles(Vehicles &vehicles, const std::string &intersection,
                             const sf::Vector2f &position, sf::RenderWindow &window);
 
+
+   float getElapsedTimeInSeconds();
+ 
 };
 #endif // VISUALIZER_H
