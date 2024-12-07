@@ -86,7 +86,7 @@ public:
     * @param endName The name of the destination intersection.
     */
    string getPathAsString(const string& startName, const string& endName);
-    void rerouteEmergencyVehicle(const string& startName, const string& endName);
+   string rerouteEmergencyVehicle(const string& startName, const string& endName);
     void findAllOptimalPaths(Vertex* start, Vertex* end, 
                            string path[], int pathIndex, 
                            string allPaths[][MAX_VERTICES], 
