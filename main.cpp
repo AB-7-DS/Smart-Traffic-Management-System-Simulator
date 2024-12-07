@@ -1,13 +1,13 @@
-#include "graph.cpp"
-#include "accidents.cpp"
-#include "vehicle.cpp"
-#include "vehicles.cpp"
-#include "route.cpp"
-#include "roadQueue.cpp"
-#include "congestionMonitoring.cpp"
-#include "trafficSignal.cpp"
-#include "trafficLightsManagement.cpp"
-#include "visualizer.cpp"
+#include "graph.h"
+#include "accidents.h"
+#include "vehicle.h"
+#include "vehicles.h"
+#include "Route.h"
+#include "roadQueue.h"
+#include "congestionMonitoring.h"
+#include "trafficSignal.h"
+#include "trafficLightManagement.h"
+#include "visualizer.h"
 #include <iostream>
 #include <string>
 using namespace std;
@@ -30,6 +30,7 @@ int main() {
     cityGraph.loadRoadData("dataset/road_network.csv");
     accidentManager.loadRoadData(cityGraph);
     vehicles.loadAndReadCSVs();
+    vehicles.addPaths(gps);
     CongestionMonitoring ht(vehicles.getHead());
     TrafficLightManagement traffic;
     traffic.makeTrafficSignals();

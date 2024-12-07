@@ -204,4 +204,19 @@ Vehicle*& Vehicles::getHead() {
     return head;
 }
 
+void Vehicles::addPaths(GPS& gps) {
+    Vehicle* current = head;
+    while (current != nullptr) {
+        string start = current->startIntersection;
+        string end = current->endIntersection;  
+        if (current->path[current->currentIntersectionInPath] != start)
+        {
+            std::cout << "\nWarning: The current intersection in the path does not match the start intersection of the vehicle. Adding a path now will reset the vehicle's position to start intersection \n" << start << endl;
+            current->currentIntersectionInPath = 0;
+        }
+        string path = gps.getPathAsString(start, end);
+        current->setPath(path);
+        current = current->next;
+    }
+}
 

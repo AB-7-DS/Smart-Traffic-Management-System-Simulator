@@ -36,13 +36,21 @@ void Vehicle::printVehicle(){
     for(int i = 0; i <= currentIntersectionInPath; i++){
         std::cout << path[i] << " ";
     }
+    std::cout << "Path: ";
+    for(int i = 0; i <= pathLength; i++){
+        std::cout << path[i] << " ";
+    }
+
     std::cout << std::endl;
+
 }
 
 void Vehicle::setPath(std::string path){
     this->presetPath = true;
+    this->pathLength = 0;
     for (int i= 0; i< path.length(); i++){
         this->path[i] = path[i];
+        this->pathLength++;
     }
     this->pathLength = path.length();
 }

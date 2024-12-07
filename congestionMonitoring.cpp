@@ -88,14 +88,20 @@ CongestionMonitoring::CongestionMonitoring(Vehicle* vehiclesHead) : hashTableSiz
 }
 
 void CongestionMonitoring::makeHashTable(Vehicle* vehiclesHead){
+
+    // first we need to check if the hash table is empty and make it empty if it is not
+    this->deleteTable();
+
     Vehicle* temp = vehiclesHead;
     std::string tempstr;
 
     while(temp) {
         char p[] = {'\0', '\0'};
-        p[0] = temp->path[temp->currentIntersectionInPath][0];
-        p[1] = temp->path[temp->currentIntersectionInPath+1][0];
-
+        if (temp->presetPath) {
+            p[0] = temp->path[temp->currentIntersectionInPath][0];
+            p[1] = temp->path[temp->currentIntersectionInPath+1][0];
+        }
+        // if the paht was not preset or if it is wrong
         if (p[0] == '\0') p[0] = temp->startIntersection[0];
         if (p[1] == '\0') p[1] = temp->endIntersection[0];
         
@@ -126,3 +132,19 @@ void CongestionMonitoring::printHashTable() {
     }
 }
 
+void CongestionMonitoring::deleteTable() {
+    for (int i = 0; i < HASH_TABLE_SIZE; i++) {
+        hashTable[i].carCount = 0;
+        hashTable[i].path[0] = '\0';
+        RoadNode* temp = hashTable[i].right;
+        while(temp) {
+            RoadNode* temp2 = temp;
+            temp = temp->right;
+            delete temp2;
+        }
+    }
+}
+
+CongestionMonitoring::~CongestionMonitoring() {
+    deleteTable();
+}

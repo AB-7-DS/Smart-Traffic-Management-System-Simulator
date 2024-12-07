@@ -27,7 +27,8 @@ class CongestionMonitoring {
         void makeHashTable(Vehicle* vehiclesHead);
         void updateHashTable(Vehicle* prevPos, Vehicle* currentPos);
         void printHashTable();
-        // ~CongestionMonitoring();
+        void deleteTable();
+        ~CongestionMonitoring();
 };
 
 
