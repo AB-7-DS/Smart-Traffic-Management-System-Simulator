@@ -84,8 +84,9 @@ sf::RenderWindow window(sf::VideoMode(800, 800), "Graph Visualization");
             }
             currentVertexNode = currentVertexNode->next;
         }
-
         window.display();
+        //delay for 1 second
+        sf::sleep(sf::seconds(1));
     }
 }
 
@@ -93,7 +94,7 @@ void Visualizer::drawVehicles(Vehicles &vehicles, const std::string &intersectio
     Vehicle *currentVehicle = vehicles.getHead();
     int decrement = 0;
     while(currentVehicle!=NULL){
-        if (currentVehicle->startIntersection == intersection) { // Match vehicle start point
+        if (currentVehicle->path[currentVehicle->currentIntersectionInPath] == intersection) { // Match vehicle start point
             // Draw vehicle label
             sf::Font font;
             if (!font.loadFromFile("sprites/font3.ttf")) {
@@ -109,6 +110,8 @@ void Visualizer::drawVehicles(Vehicles &vehicles, const std::string &intersectio
             label.setPosition(position.x, position.y - 20+decrement);
             window.draw(label);
             decrement-=20;
+            currentVehicle->moveForward();
+            
         }
         currentVehicle = currentVehicle->next;
     }
