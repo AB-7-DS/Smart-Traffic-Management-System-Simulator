@@ -59,7 +59,7 @@ void GPS::findAllPathsDFS(Vertex* start, Vertex* end,
     // If we reached the end vertex, store the current path and total weight
     if (start == end) {
         if (allPathsCount >= MAX_VERTICES) {
-            cerr << "The total possible paths found exceed MAX VERTICES" << endl;
+            // cerr << "The total possible paths found exceed MAX VERTICES" << endl;
             return;
         }
 
