@@ -259,19 +259,14 @@ string GPS::getPathAsString(const string& startName, const string& endName) {
 
     return fullPath;
 }
-
-
-
-
-
 ///rerouting for emergency vehicle
-void GPS::rerouteEmergencyVehicle(const string& startName, const string& endName) {
+string GPS::rerouteEmergencyVehicle(const string& startName, const string& endName) {
     Vertex* start = graph->findVertex(startName);
     Vertex* end = graph->findVertex(endName);
 
     if (!start || !end) {
         cout << "The intersections were not found for rerouting vehicle\n";
-        return;
+        return "";
     }
     string path[MAX_VERTICES];               // Array to store the current path
     string allPaths[MAX_VERTICES][MAX_VERTICES]; // Array to store all possible paths
@@ -287,7 +282,7 @@ void GPS::rerouteEmergencyVehicle(const string& startName, const string& endName
 
     if (allPathsCount == 0) {
         cout << "No path found between " << startName << " and " << endName << endl;
-        return;
+        return "";
     }
 
     // Find the path with the minimum weight
@@ -303,16 +298,16 @@ void GPS::rerouteEmergencyVehicle(const string& startName, const string& endName
 
     if (minWeightIndex == -1) {
         cout << "\nCould not determine the path to reroute to\n";
-        return;
+        return "";
     }
 
     // Print the least weight path
     cout << "\nEmergency Vehicle is being routed.........\n ";
     cout<<"Emergency Vehicle Path :";
+    string shortestPath="";
     for (int j = 0; allPaths[minWeightIndex][j] != ""; j++) {
-        cout << allPaths[minWeightIndex][j] << " ";
+        shortestPath += allPaths[minWeightIndex][j];
     }
+    return shortestPath;
 
 }
-
-
