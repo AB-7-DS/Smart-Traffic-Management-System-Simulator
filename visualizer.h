@@ -3,48 +3,54 @@
 
 #include <SFML/Graphics.hpp>
 #include <string>
+#include <map>
 #include "graph.h"
+#include "vehicle.h"
 #include "vehicles.h"
-
-// Constants for visualization
-const float WINDOW_WIDTH = 1000;
-const float WINDOW_HEIGHT = 800;
-
-// Helper function to convert degrees to radians
-float toRadians(float degrees) {
-    return degrees * 3.14159f / 180.0f;
-}
 
 class Visualizer {
 private:
-    sf::RenderWindow window;
-    sf::Font font;
-    sf::Clock clock; //<Measures elapsed time
-
-    // Textures
-    sf::Texture trafficLightTextureRed;
-    sf::Texture trafficLightTextureGreen;
-    sf::Texture trafficLightTextureYellow;
-    sf::Texture roadTexture;
-    sf::Texture carTexture;
-    sf::Texture vipCarTexture;
-
-    // Sprites
-    sf::Sprite trafficLightRed;
-    sf::Sprite trafficLightGreen;
-    sf::Sprite trafficLightYellow;
+    sf::RenderWindow window;  
     sf::Sprite roadSprite;
-    sf::Sprite carSprite;
-    sf::Sprite vipCarSprite;
-
+    sf::Sprite vehicleSprite;
+    sf::Font font;
+    sf::Texture roadTexture;
+    sf::Texture vehicleTexture;
+    
 public:
+/**
+ * @class Visualizer
+ * @brief A class to handle the visualization of the traffic management system.
+ *
+ * This class is responsible for rendering the simulation of the traffic management system,
+ * including roads and vehicles, using the SFML library.
+ */
+ 
+/**
+ * @brief Constructor for the Visualizer class.
+ *
+ * Initializes the render window, loads textures, and sets up sprites.
+ */
     Visualizer();
-    void drawGraph(Graph& graph);
-    //0 = red, 1= yellow, 2 = green
-    void drawTrafficSignal(const sf::Vector2f& position, int signalState);
-    void drawVehicle(const sf::Vector2f& position, float rotationAngle = 0.0f);
-    void renderLoop(Vehicles & vehicles,Graph& graph);
-    void drawVIPVehicle(const sf::Vector2f& position,float rotationAngle = 0.0f);
-    float getElapsedTimeInSeconds();
+
+/**
+ * @brief Draws the entire simulation graph.
+ *
+ * @param graph The graph representing the traffic network.
+ * @param vehicles The collection of vehicles to be drawn.
+ */
+    void drawSimulation(Graph &graph, Vehicles &vehicles);
+
+    /**
+ * @brief Draws vehicles at the specified intersection.
+ *
+ * @param vehicles The collection of vehicles to be drawn.
+ * @param intersection The name of the intersection where vehicles are to be drawn.
+ * @param position The position where the vehicles should be drawn.
+ * @param window The render window where the vehicles will be drawn.
+ */
+   void drawVehicles(Vehicles &vehicles, const std::string &intersection,
+                            const sf::Vector2f &position, sf::RenderWindow &window);
+
 };
-#endif
+#endif // VISUALIZER_H
