@@ -222,6 +222,43 @@ void GPS::printAllPaths(const string& startName, const string& endName) {
     }
 }
 
+string GPS::getPathAsString(const string& startName, const string& endName) {
+    Vertex* start = graph->findVertex(startName);
+    Vertex* end = graph->findVertex(endName);
+
+    // Check for invalid start or end vertices
+    if (!start || !end) {
+        cerr << "Error: One or both intersections not found!" << endl;
+        return ""; // Return an empty string to handle the error case
+    }
+
+    // Arrays for pathfinding
+    string path[MAX_VERTICES];                 // Array to store the current path
+    string allPaths[MAX_VERTICES][MAX_VERTICES]; // Array to store all possible paths
+     int totalWeight[MAX_VERTICES] = { 0 };     // Array to store total weights of paths
+    bool visited[MAX_VERTICES] = { false };    // Array to track visited vertices
+
+    int pathIndex = 0;          // Index for the current path
+    int allPathsCount = 0;      // Counter for all paths
+    int totalWeightCount = 0;   // Counter for total weights
+
+    // Start finding all paths using DFS
+    findAllPathsDFS(start, end, path, pathIndex, allPaths, allPathsCount, visited, totalWeight, totalWeightCount);
+
+    // If no paths are found, return an empty string
+    if (allPathsCount == 0) {
+        cerr << "Error: No paths found between the intersections!" << endl;
+        return ""; // Return an empty string to signify no paths found
+    }
+
+    // Construct the first full path as a single concatenated string
+    string fullPath;
+    for (int i = 0; i < MAX_VERTICES && !allPaths[0][i].empty(); ++i) {
+        fullPath += allPaths[0][i]; // Append the vertex name directly
+    }
+
+    return fullPath;
+}
 
 
 
@@ -275,4 +312,7 @@ void GPS::rerouteEmergencyVehicle(const string& startName, const string& endName
     for (int j = 0; allPaths[minWeightIndex][j] != ""; j++) {
         cout << allPaths[minWeightIndex][j] << " ";
     }
+
 }
+
+

@@ -54,4 +54,5 @@ void TrafficLightManagement::printGreenTimes(){
             std::cout << "Intersection " << temp->intersectionId << " Green Time: " << temp->duration << "s" << std::endl;
             temp = temp->next;
       }
+     
 }
