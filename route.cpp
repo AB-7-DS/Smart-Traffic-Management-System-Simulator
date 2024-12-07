@@ -302,8 +302,6 @@ string GPS::rerouteEmergencyVehicle(const string& startName, const string& endNa
     }
 
     // Print the least weight path
-    cout << "\nEmergency Vehicle is being routed.........\n ";
-    cout<<"Emergency Vehicle Path :";
     string shortestPath="";
     for (int j = 0; allPaths[minWeightIndex][j] != ""; j++) {
         shortestPath += allPaths[minWeightIndex][j];
