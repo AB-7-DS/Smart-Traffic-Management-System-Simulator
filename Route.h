@@ -90,6 +90,7 @@ public:
     string getPathAsString(const string& startName, const string& endName);
     void findAllOptimalPaths(Vertex* start, Vertex* end, string path[], int pathIndex, string allPaths[][MAX_VERTICES], int& allPathsCount, bool visited[], int totalWeight[], int& totalWeightCount);
     void printAllPathsDijkstra(const string& startName, const string& endName);
+    int heuristic(const Vertex* a, const Vertex* b);
 };
 
 #endif

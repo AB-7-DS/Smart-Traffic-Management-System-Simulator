@@ -259,7 +259,6 @@ string GPS::getPathAsString(const string& startName, const string& endName) {
 
     return fullPath;
 }
-///rerouting for emergency vehicle
 string GPS::rerouteEmergencyVehicle(const string& startName, const string& endName) {
     Vertex* start = graph->findVertex(startName);
     Vertex* end = graph->findVertex(endName);
@@ -268,48 +267,106 @@ string GPS::rerouteEmergencyVehicle(const string& startName, const string& endNa
         cout << "The intersections were not found for rerouting vehicle\n";
         return "";
     }
-    string path[MAX_VERTICES];               // Array to store the current path
-    string allPaths[MAX_VERTICES][MAX_VERTICES]; // Array to store all possible paths
-    int totalWeight[MAX_VERTICES] = { 0 };            // Array to store total weights of paths
-    bool visited[MAX_VERTICES] = { false };        // Array to track visited vertices
 
-    int pathIndex = 0;      // Index for the current path
-    int allPathsCount = 0;  // Counter for all paths
-    int totalWeightCount = 0;  // Counter for total weights
+    // Arrays to represent gScore, fScore, and cameFrom
+    int gScore[MAX_VERTICES];
+    int fScore[MAX_VERTICES];
+    Vertex* cameFrom[MAX_VERTICES] = {nullptr};
+    bool closedSet[MAX_VERTICES] = {false}; // Tracks visited nodes
+    Vertex* openSet[MAX_VERTICES] = {nullptr}; // Open set
+    int openSetSize = 0; // Tracks the size of the open set
 
-    // Start finding all paths using DFS
-    findAllOptimalPaths(start, end, path, pathIndex, allPaths, allPathsCount, visited, totalWeight, totalWeightCount);
-
-    if (allPathsCount == 0) {
-        cout << "No path found between " << startName << " and " << endName << endl;
-        return "";
+    // Initialize gScore and fScore
+    for (int i = 0; i < MAX_VERTICES; i++) {
+        gScore[i] = INT_MAX;
+        fScore[i] = INT_MAX;
     }
 
-    // Find the path with the minimum weight
-    int minWeight = 5500000;
-    int minWeightIndex = -1;
+    int startIndex = getVertexIndex(startName);
+    int endIndex = getVertexIndex(endName);
 
-    for (int i = 0; i < totalWeightCount; i++) {
-        if (totalWeight[i] < minWeight) {
-            minWeight = totalWeight[i];
-            minWeightIndex = i;
+    gScore[startIndex] = 0;
+    fScore[startIndex] = heuristic(start, end);
+
+    // Add start to open set
+    openSet[openSetSize++] = start;
+
+    while (openSetSize > 0) {
+        // Find the node in the open set with the lowest fScore
+        int currentIndex = -1;
+        int currentFScore = INT_MAX;
+        Vertex* current = nullptr;
+        for (int i = 0; i < openSetSize; i++) {
+            int index = getVertexIndex(openSet[i]->name);
+            if (fScore[index] < currentFScore) {
+                currentIndex = i;
+                currentFScore = fScore[index];
+                current = openSet[i];
+            }
+        }
+
+        // If we reached the end, reconstruct the path
+        if (current == end) {
+            string shortestPath = "";
+            for (Vertex* v = end; v != nullptr; v = cameFrom[getVertexIndex(v->name)]) {
+                shortestPath = v->name + " " + shortestPath;
+            }
+            return shortestPath;
+        }
+
+        // Remove the current node from the open set
+        for (int i = currentIndex; i < openSetSize - 1; i++) {
+            openSet[i] = openSet[i + 1];
+        }
+        openSetSize--;
+
+        // Add current to closed set
+        closedSet[getVertexIndex(current->name)] = true;
+
+        // Explore neighbors
+        EdgeNode* edgeNode = current->edges;
+        while (edgeNode) {
+            Vertex* neighbor = edgeNode->edge->destination;
+            int neighborIndex = getVertexIndex(neighbor->name);
+
+            if (closedSet[neighborIndex]) {
+                edgeNode = edgeNode->next;
+                continue;
+            }
+
+            int tentativeGScore = gScore[getVertexIndex(current->name)] + edgeNode->edge->travelTime;
+
+            // If neighbor is not in open set, add it
+            bool inOpenSet = false;
+            for (int i = 0; i < openSetSize; i++) {
+                if (openSet[i] == neighbor) {
+                    inOpenSet = true;
+                    break;
+                }
+            }
+            if (!inOpenSet) {
+                openSet[openSetSize++] = neighbor;
+            }
+
+            // Update scores and path
+            if (tentativeGScore < gScore[neighborIndex]) {
+                cameFrom[neighborIndex] = current;
+                gScore[neighborIndex] = tentativeGScore;
+                fScore[neighborIndex] = gScore[neighborIndex] + heuristic(neighbor, end);
+            }
+
+            edgeNode = edgeNode->next;
         }
     }
 
-    if (minWeightIndex == -1) {
-        cout << "\nCould not determine the path to reroute to\n";
-        return "";
-    }
-
-    // Print the least weight path
-    string shortestPath="";
-    for (int j = 0; allPaths[minWeightIndex][j] != ""; j++) {
-        shortestPath += allPaths[minWeightIndex][j];
-    }
-    return shortestPath;
-
+    cout << "No path found between " << startName << " and " << endName << endl;
+    return ""; // Return an empty string if no path is found
 }
 
+// Heuristic function: Straight-line distance (dummy implementation)
+int GPS::heuristic(const Vertex* a, const Vertex* b) {
+    return abs(a->name[0] - b->name[0]); // Replace with actual heuristic if coordinates exist
+}
 void GPS::printAllPathsDijkstra(const std::string& startName, const std::string& endName) {
     Vertex* start = graph->findVertex(startName);
     Vertex* end = graph->findVertex(endName);

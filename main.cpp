@@ -124,7 +124,8 @@ int main() {
                 cin >> end;
                 //will added check function to check if vehicle is emergency
                 path = gps.rerouteEmergencyVehicle(start, end);
-                cout << "The new path for the emergency vehicle is: " << path << endl;
+                  cout << "Emergency Vehicle is being routed...... " << path << endl;
+                cout << "Emergency Vehicle Path: " << path << endl;
                 break;
             case 6: {
                 cout << "Enter the start intersection to block: ";
