@@ -156,8 +156,7 @@ void CongestionMonitoring::deleteTable() {
 int CongestionMonitoring::getTravelTime(char start, char end, int prevTime) {
     RoadNode* temp = findRoadNode(start, end);
     if (!temp) {
-        std::cerr << "No road found" << std::endl;
-        return 0;
+        return prevTime;
     }
     bool isPeakHour = false;
     if (prevTime >= 3600 && prevTime <= 7200) isPeakHour = true;
