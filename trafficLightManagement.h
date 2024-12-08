@@ -1,8 +1,8 @@
 #ifndef TRAFFIC_LIGHT_MANAGEMENT_H
 #define TRAFFIC_LIGHT_MANAGEMENT_H
+// # include "visualizer.h" 
 # include "trafficSignal.h"
 # include "congestionMonitoring.h"
-# include "visualizer.h" 
 # include <string>
 /**
  * @class TrafficLightManagement
@@ -63,7 +63,7 @@ class TrafficLightManagement {
              * @param mostCongestedIntersection The intersection with the most congestion.
              * @param vs The visualizer object.
              */
-            void manageTrafficLights(char mostCongestedIntersection, Visualizer* vs);
+            // void manageTrafficLights(char mostCongestedIntersection, Visualizer* vs);
 };
 
 #endif

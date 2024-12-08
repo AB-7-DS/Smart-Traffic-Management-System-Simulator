@@ -7,6 +7,7 @@
 #include "graph.h"
 #include "vehicle.h"
 #include "vehicles.h"
+#include "trafficSignal.h"
 #include "accidents.h"
 #include "trafficLightManagement.h"
 #include "congestionMonitoring.h"

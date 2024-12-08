@@ -1,9 +1,9 @@
 
 #ifndef TRAFFIC_SIGNAL_H
 #define TRAFFIC_SIGNAL_H
-#include "visualizer.h"
+// #include "visualizer.h"
 #include <string>
-
+class Visualizer;
 /**
  * @class TrafficSignal
  * @brief A class to represent a traffic signal at an intersection.
@@ -140,12 +140,12 @@ class TrafficSignal {
              * 
              * this function must be called continuously in the mainloop to change the state of the signal
              */
-            void advanceState(Visualizer* visualizer);
+            // void advanceState(Visualizer* visualizer);
 
             /**
              * @brief Turn the traffic signal from red to green
              */
-            void turnGreen(Visualizer* visualizer);
+            // void turnGreen(Visualizer* visualizer);
 };
 
 #endif
