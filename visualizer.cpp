@@ -148,7 +148,9 @@ sf::RenderWindow window(sf::VideoMode(800, 800), "Graph Visualization");
         sf::sleep(sf::seconds(1));
         Vehicle *currentVehicle = vehicles.getHead();
         while (currentVehicle != NULL) {
+            if(currentVehicle->presetPath)
             currentVehicle->moveForward();
+            
             currentVehicle = currentVehicle->next;
         }
     }
