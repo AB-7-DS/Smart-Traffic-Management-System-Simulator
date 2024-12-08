@@ -34,12 +34,15 @@ int main() {
     vehicles.addPaths(gps);
     CongestionMonitoring ht(vehicles.getHead());
     ht.makeHashTable(vehicles.getHead());
-
+  
     TrafficLightManagement traffic;
     traffic.makeTrafficSignals();
     CongestionMaxHeap maxHeap;
     maxHeap.makeHeap(ht.hashTable, HASH_TABLE_SIZE);    
    
+   
+
+
     string start,end,path;
     int choice,c;
     do {

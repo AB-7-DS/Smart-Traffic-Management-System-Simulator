@@ -91,6 +91,7 @@ CongestionMonitoring::CongestionMonitoring(Vehicle* vehiclesHead) : hashTableSiz
     makeHashTable(vehiclesHead);
 }
 
+
 void CongestionMonitoring::makeHashTable(Vehicle* vehiclesHead){
 
     // first we need to check if the hash table is empty and make it empty if it is not
@@ -126,11 +127,25 @@ void CongestionMonitoring::updateHashTable(Vehicle* prevPos, Vehicle* currentPos
 
 void CongestionMonitoring::printHashTable() {
     std::cout << std::endl;
+
+    // Array to track visited roads
+    bool visited[HASH_TABLE_SIZE] = {false};
+
     for (int i = 0; i < HASH_TABLE_SIZE; i++) {
         RoadNode* temp = &hashTable[i];
-        while(temp) {
-            if (temp->path[0] != '\0' && temp->path[1] != '\0') 
-                std::cout << temp->path[0] << " to  " << temp->path[1] << " -> Vehicles: " << temp->carCount << std::endl;
+
+        while (temp) {
+            // Check if the road (start, end) is unique
+            if (temp->path[0] != '\0' && temp->path[1] != '\0') {
+                // Calculate hash index for the road in reverse order
+                int reverseIndex = hashFunction(temp->path[1], temp->path[0]);
+
+                // Print road only if it hasn't been visited in forward or reverse order
+                if (!visited[i] && !visited[reverseIndex]) {
+                    std::cout << temp->path[0] << " to " << temp->path[1] << " -> Vehicles: " << temp->carCount << std::endl;
+                    visited[i] = true;
+                }
+            }
             temp = temp->right;
         }
     }
@@ -202,3 +217,4 @@ int CongestionMonitoring::numberOfCongestionEvents() {
     }
     return count;
 }
+
