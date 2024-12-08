@@ -278,8 +278,8 @@ string GPS::rerouteEmergencyVehicle(const string& startName, const string& endNa
 
     // Initialize gScore and fScore
     for (int i = 0; i < MAX_VERTICES; i++) {
-        gScore[i] = INT_MAX;
-        fScore[i] = INT_MAX;
+        gScore[i] = 1000000000;
+        fScore[i] = 1000000000;
     }
 
     int startIndex = getVertexIndex(startName);

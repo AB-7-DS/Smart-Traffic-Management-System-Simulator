@@ -92,6 +92,36 @@ Vertex* Graph::findVertex(const std::string& name) {
     return nullptr;  // Vertex not found
 }
 
+// Remove an intersection (vertex) and all connected roads (edges)
+void Graph::removeVertex(const string& name) {
+    VertexNode* current = headVertex;
+    VertexNode* prev = nullptr;
+
+    while (current) {
+        if (current->vertex->name == name) {
+            // Remove all edges connected to this vertex from the graph
+            EdgeNode* edgeCurrent = current->vertex->edges;
+            while (edgeCurrent) {
+                EdgeNode* temp = edgeCurrent;
+                edgeCurrent = edgeCurrent->next;
+                delete temp;
+            }
+            // Remove the vertex from the linked list
+            if (prev) {
+                prev->next = current->next;
+            } else {
+                headVertex = current->next;  // Removing head vertex
+            }
+            delete current->vertex;
+            delete current;
+            cout << "Intersection " << name << " removed successfully." << endl;
+            return;
+        }
+        prev = current;
+        current = current->next;
+    }
+    cout << "Intersection not found!" << endl;
+}
 // Add an edge between two vertices
 void Graph::addEdge(const std::string& start, const std::string& end, int travelTime) {
     Vertex* startVertex = findVertex(start);
@@ -118,6 +148,33 @@ void Graph::addEdge(const std::string& start, const std::string& end, int travel
     }
 
     
+}
+void Graph::removeEdge(const string& start, const string& end) {
+    Vertex* startVertex = findVertex(start);
+    Vertex* endVertex = findVertex(end);
+    if (!startVertex || !endVertex) {
+        cout << "One or both intersections not found!" << endl;
+        return;
+    }
+
+    EdgeNode* current = startVertex->edges;
+    EdgeNode* prev = nullptr;
+    while (current) {
+        if (current->edge->destination == endVertex) {
+            if (prev) {
+                prev->next = current->next;
+            } else {
+                startVertex->edges = current->next;
+            }
+            delete current->edge;
+            delete current;
+            cout << "Road between " << start << " and " << end << " removed successfully." << endl;
+            return;
+        }
+        prev = current;
+        current = current->next;
+    }
+    cout << "Road not found!" << endl;
 }
 void Graph::loadRoadData(const std::string& filename) {
     std::ifstream file(filename);

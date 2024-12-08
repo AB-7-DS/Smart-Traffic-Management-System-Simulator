@@ -146,7 +146,7 @@ public:
      * @return A pointer to the Vertex object if found, or nullptr if not found.
      */
     Vertex* findVertex(const std::string& name);
-
+     void removeVertex(const string& name);
     /**
      * @brief Adds a road (edge) between two intersections.
      * 
@@ -155,7 +155,7 @@ public:
      * @param travelTime The travel time between the two intersections.
      */
     void addEdge(const std::string& start, const std::string& end, int travelTime);
-
+    void removeEdge(const string& start, const string& end) ;
     /**
      * @brief Loads road network data from a file.
      * @param filename The name of the CSV file to load road data from (default is "road_network.csv").
@@ -189,7 +189,7 @@ public:
     void displayBlockedEdges();
 
    
-
+      
     /**
      * @brief Adds an edge to the specified vertex.
      * 

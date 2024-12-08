@@ -7,7 +7,7 @@
 #include "congestionMonitoring.h"
 #include "congestionMaxHeap.h"
 #include "trafficSignal.h"
-#include "trafficLightManagement.h"
+#include "trafficLightsManagement.h"
 #include "visualizer.h"
 #include <iostream>
 #include <string>
@@ -55,7 +55,11 @@ int main() {
         cout << "5. Handle Emergency Vehicle Routing\n";
         cout << "6. Block Road due to Accident\n";
         cout << "7. Simulate Vehicle Routing\n";
-        cout << "8. Exit Simulation\n";
+        cout << "8. Add Intersection\n";
+        cout << "9. Remove Intersection\n";
+        cout << "10. Add Road\n";
+        cout << "11. Remove Road\n";
+        cout << "12. Exit Simulation\n";
         cout << "Enter your choice: ";
         cin >> choice;
 
@@ -124,7 +128,7 @@ int main() {
                 cin >> end;
                 //will added check function to check if vehicle is emergency
                 path = gps.rerouteEmergencyVehicle(start, end);
-                  cout << "Emergency Vehicle is being routed...... " << path << endl;
+                  cout << "Emergency Vehicle is being routed...... " <<  endl;
                 cout << "Emergency Vehicle Path: " << path << endl;
                 break;
             case 6: {
@@ -170,15 +174,50 @@ int main() {
                         cout<<"Invalid Choice!. Try again!\n";
                 }while(c!=0);    
                 break;
-            case 8:
-                cout << "Exiting Simulation. Goodbye!\n";
-                break;
-            default:
-                cout << "Invalid choice! Please try again.\n";
+                   case 8: {
+            string intersection;
+            cout << "Enter the name of the intersection to add: ";
+            cin >> intersection;
+            cityGraph.addVertex(intersection);
+            break;
         }
+        case 9: {
+            string intersection;
+            cout << "Enter the name of the intersection to remove: ";
+            cin >> intersection;
+            cityGraph.removeVertex(intersection);
+            break;
+        }
+        case 10: {
+            string start, end;
+            int travelTime;
+            cout << "Enter the start intersection: ";
+            cin >> start;
+            cout << "Enter the end intersection: ";
+            cin >> end;
+            cout << "Enter the travel time: ";
+            cin >> travelTime;
+            cityGraph.addEdge(start, end, travelTime);
+            break;
+        }
+        case 11: {
+            string start, end;
+            cout << "Enter the start intersection to remove the road: ";
+            cin >> start;
+            cout << "Enter the end intersection to remove the road: ";
+            cin >> end;
+            cityGraph.removeEdge(start, end);
+            break;
+        }
+        case 12:
+            cout << "Exiting Simulation. Goodbye!\n";
+            break;
+        default:
+            cout << "Invalid choice! Please try again.\n";
+    }
 
-        cout << endl; 
-    } while (choice != 8);
+    cout << endl;
+} while (choice != 12);
     
     Visualizer visualizer;
     Vehicle *temp = vehicles.getHead();
