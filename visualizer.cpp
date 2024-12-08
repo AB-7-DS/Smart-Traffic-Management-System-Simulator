@@ -59,6 +59,10 @@ sf::RenderWindow window(sf::VideoMode(800, 800), "Graph Visualization");
             label.setFillColor(sf::Color::White);
             label.setPosition(x, y-7); // position of the label
             window.draw(label);
+            int greenTime = traffic.getSignal(vertex->name)->getDuration();
+            string greenTimeStr = to_string(greenTime);
+            label.setString(greenTimeStr);
+            label.setPosition(x - 20, y - 20); // position of the label
             drawVehicles(vehicles, vertex->name, positions[vertex->name], window);
             currentVertexNode = currentVertexNode->next;
         }
@@ -81,8 +85,7 @@ sf::RenderWindow window(sf::VideoMode(800, 800), "Graph Visualization");
                 if (graph.getEdgeWeight(start, end) != -1) {
                     // Get the color for the edge
                     sf::Color color = choseColor(currentEdgeNode, vertex, traffic, ht, accidentManager);
-
-                    // Create the vertex array with the correct color
+                   // Create the vertex array with the correct color
                     sf::Vertex line[] = {
                         sf::Vertex(positions[start], color), // Start vertex
                         sf::Vertex(positions[end], color)   // End vertex
@@ -140,15 +143,21 @@ sf::RenderWindow window(sf::VideoMode(800, 800), "Graph Visualization");
             }
             currentVertexNode = currentVertexNode->next;
         }
+        
         window.display();
         sf::sleep(sf::seconds(1));
+        Vehicle *currentVehicle = vehicles.getHead();
+        while (currentVehicle != NULL) {
+            currentVehicle->moveForward();
+            currentVehicle = currentVehicle->next;
+        }
     }
 }
 
-void Visualizer::drawVehicles(Vehicles &vehicles, const std::string &intersection,const sf::Vector2f &position, sf::RenderWindow &window){
+void Visualizer::drawVehicles(Vehicles &vehicles, const std::string &intersection, const sf::Vector2f &position, sf::RenderWindow &window) {
     Vehicle *currentVehicle = vehicles.getHead();
     int decrement = 0;
-    while(currentVehicle!=NULL){
+    while (currentVehicle != NULL) {
         if (currentVehicle->path[currentVehicle->currentIntersectionInPath] == intersection) { // Match vehicle start point
             // Draw vehicle label
             sf::Font font;
@@ -162,11 +171,9 @@ void Visualizer::drawVehicles(Vehicles &vehicles, const std::string &intersectio
             label.setString(currentVehicle->vehicleID);
             label.setCharacterSize(20);
             label.setFillColor(sf::Color::Red);
-            label.setPosition(position.x, position.y - 20+decrement);
+            label.setPosition(position.x, position.y - 20 + decrement);
             window.draw(label);
-            decrement-=20;
-            currentVehicle->moveForward();
-            
+            decrement -= 20;
         }
         currentVehicle = currentVehicle->next;
     }
@@ -188,7 +195,7 @@ sf::Color Visualizer::choseColor(EdgeNode *edgeNode, Vertex *vertex, TrafficLigh
     
 
     // Check if the edge has a green light
-    string signal = traffic.getSignal(vertex->name)->getState();
+    string signal = traffic.getSignal(vertex->name)->state;
     if (signal=="green") {
         cout<<"Green light"<<endl;
         return sf::Color::Green;
