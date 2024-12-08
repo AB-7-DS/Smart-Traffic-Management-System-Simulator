@@ -140,12 +140,12 @@ class TrafficSignal {
              * 
              * this function must be called continuously in the mainloop to change the state of the signal
              */
-            // void advanceState(Visualizer* visualizer);
+            void advanceState(Visualizer* visualizer);
 
             /**
              * @brief Turn the traffic signal from red to green
              */
-            // void turnGreen(Visualizer* visualizer);
+            void turnGreen(Visualizer* visualizer);
 };
 
 #endif

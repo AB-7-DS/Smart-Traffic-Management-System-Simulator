@@ -1,5 +1,5 @@
 #include "Route.h"
-
+#include "bits/stdc++.h"
 using namespace std;
 // Constructor
 GPS::GPS(Graph* graph) : graph(graph) {

@@ -63,7 +63,7 @@ class TrafficLightManagement {
              * @param mostCongestedIntersection The intersection with the most congestion.
              * @param vs The visualizer object.
              */
-            // void manageTrafficLights(char mostCongestedIntersection, Visualizer* vs);
+            void manageTrafficLights(char mostCongestedIntersection, Visualizer* vs);
 };
 
 #endif

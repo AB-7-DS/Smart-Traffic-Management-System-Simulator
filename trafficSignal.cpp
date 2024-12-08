@@ -1,8 +1,10 @@
 #include "trafficSignal.h"
-// #include "visualizer.h"
+#include "visualizer.h"
 #include <cmath>
 #include <cctype>
 #include <iostream>
+
+class Visualizer;
 
 TrafficSignal::TrafficSignal(std::string state, char intersectionId, int duration, int transitionTime) {
       // Convert the state to lowercase
@@ -53,32 +55,32 @@ int TrafficSignal::getDuration() {
       return duration;
 }
 
-// void TrafficSignal::advanceState(Visualizer* visualizer) {
+void TrafficSignal::advanceState(Visualizer* visualizer) {
 
-//       // to advance from red to yellow, call the turn green method
+      // to advance from red to yellow, call the turn green method
 
-//       // this->temp = visualizer->getElapsedTimeInSeconds();
-//       if (state == "yellow") {
-//             if (abs(this->temp-visualizer->getElapsedTimeInSeconds()) >= transitionTime) {
-//                   state = "green";
-//                   this->temp = visualizer->getElapsedTimeInSeconds();
-//             }
-//       }
-//       if (state == "green") {
-//             if (abs(this->temp-visualizer->getElapsedTimeInSeconds()) >= this->duration) {
-//                   state = "red";
-//                   this->temp = visualizer->getElapsedTimeInSeconds();
-//             }
-//       }
+      // this->temp = visualizer->getElapsedTimeInSeconds();
+      if (state == "yellow") {
+            if (abs(this->temp-visualizer->getElapsedTimeInSeconds()) >= transitionTime) {
+                  state = "green";
+                  this->temp = visualizer->getElapsedTimeInSeconds();
+            }
+      }
+      if (state == "green") {
+            if (abs(this->temp-visualizer->getElapsedTimeInSeconds()) >= this->duration) {
+                  state = "red";
+                  this->temp = visualizer->getElapsedTimeInSeconds();
+            }
+      }
 
-// }
+}
 
 int TrafficSignal::getTransitionTime() {
       return transitionTime;
 }
 
-// void TrafficSignal::turnGreen(Visualizer* visualizer) {
-//       state = "yellow";
-//       this->temp = visualizer->getElapsedTimeInSeconds();
-// }
+void TrafficSignal::turnGreen(Visualizer* visualizer) {
+      state = "yellow";
+      this->temp = visualizer->getElapsedTimeInSeconds();
+}
 
