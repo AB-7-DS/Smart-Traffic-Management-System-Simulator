@@ -3,7 +3,9 @@
 using namespace std;
 // Constructor
 GPS::GPS(Graph* graph) : graph(graph) {
-    memset(vertexNames, 0, sizeof(vertexNames));  // Initialize the vertex names array
+    for (int i = 0; i < MAX_VERTICES; ++i) {
+        vertexNames[i] = "";
+    }
 }
 
 /**
