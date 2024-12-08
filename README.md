@@ -120,7 +120,8 @@ Once the project is compiled, run the program with:
 #### For Ubuntu :
 
 ```bash
-./app
+g++ main.cpp -o sfml-app -lsfml-graphics -lsfml-window -lsfml-system
+ ./sfml-app
 ```
 
 
@@ -337,3 +338,374 @@ classDiagram
     GPS "1" -- "1" Graph : uses
     RoadQueue "1" -- "*" RoadNode : manages
 ```
+
+# Outputs
+
+```text
+------ Simulation Dashboard ------
+1. Display City Traffic Network
+2. Display Traffic Signal Status
+3. Display Congestion Status
+4. Display Blocked Roads
+5. Handle Emergency Vehicle Routing
+6. Block Road due to Accident
+7. Simulate Vehicle Routing
+8. Add Intersection
+9. Remove Intersection
+10. Add Road
+11. Remove Road
+12. Exit Simulation
+Enter your choice:
+```
+
+### Display City Traffic Network
+```text
+ 1.Road Network 2.Road Status   0.Exit
+Your choice: 1
+A -> (B, 5), (C, 15), (D, 20), (G, 25), (H, 22)
+B -> (C, 10), (D, 9), (E, 14), (F, 15), (H, 17)
+C -> (D, 7), (E, 12), (H, 13)
+D -> (E, 3), (F, 10), (G, 18)
+E -> (F, 8), (H, 15)
+F -> (G, 6), (I, 11)
+G -> (H, 9), (J, 12)
+H -> (I, 7), (J, 8)
+I -> (J, 5)
+J -> (K, 10)
+K -> (L, 14)
+L -> (M, 6)
+M -> (N, 8)
+N -> (O, 10)
+O -> (P, 12)
+P -> (Q, 5)
+Q -> (R, 15)
+R -> (S, 7)
+S -> (T, 9)
+T -> (U, 6)
+U -> (V, 10)
+V -> (W, 8)
+W -> (X, 6)
+X -> (Y, 5)
+Y -> (Z, 7)
+Z ->
+```
+### Road Status
+```text
+Your choice: 2
+A -> (B, Open), (C, Open), (D, Open), (G, Blocked), (H, Open)
+B -> (C, Blocked), (D, Open), (E, Open), (F, Under Repair), (H, Open)
+C -> (D, Open), (E, Open), (H, Under Repair)
+D -> (E, Open), (F, Open), (G, Open)
+E -> (F, Open), (H, Open)
+F -> (G, Open), (I, Open)
+G -> (H, Open), (J, Blocked)
+H -> (I, Blocked), (J, Open)
+I -> (J, Open)
+J -> (K, Open)
+K -> (L, Blocked)
+L -> (M, Open)
+M -> (N, Under Repair)
+N -> (O, Blocked)
+O -> (P, Open)
+P -> (Q, Under Repair)
+Q -> (R, Blocked)
+R -> (S, Open)
+S -> (T, Blocked)
+T -> (U, Open)
+U -> (V, Under Repair)
+V -> (W, Open)
+W -> (X, Blocked)
+X -> (Y, Open)
+Y -> (Z, Open)
+Z ->
+```
+### Display Traffic Signal Status
+
+```text
+Enter your choice: 2
+Intersection A Green Time: 30s
+Intersection B Green Time: 40s
+Intersection C Green Time: 50s
+Intersection D Green Time: 25s
+Intersection E Green Time: 35s
+Intersection F Green Time: 20s
+Intersection G Green Time: 15s
+Intersection H Green Time: 30s
+Intersection I Green Time: 25s
+Intersection J Green Time: 20s
+Intersection K Green Time: 35s
+Intersection L Green Time: 25s
+Intersection M Green Time: 30s
+Intersection N Green Time: 20s
+Intersection O Green Time: 15s
+Intersection P Green Time: 30s
+Intersection Q Green Time: 25s
+Intersection R Green Time: 40s
+Intersection S Green Time: 30s
+Intersection T Green Time: 25s
+Intersection U Green Time: 20s
+Intersection V Green Time: 15s
+Intersection W Green Time: 20s
+Intersection X Green Time: 25s
+Intersection Y Green Time: 30s
+Intersection Z Green Time: 35s
+
+```
+### Display Congestion Status
+
+```text
+A to B -> Vehicles: 6
+G to H -> Vehicles: 5
+B to C -> Vehicles: 4
+X to Y -> Vehicles: 2
+H to I -> Vehicles: 3
+E to F -> Vehicles: 1
+F to G -> Vehicles: 4
+N to O -> Vehicles: 1
+M to N -> Vehicles: 2
+R to S -> Vehicles: 2
+D to E -> Vehicles: 3
+L to M -> Vehicles: 1
+I to J -> Vehicles: 1
+T to U -> Vehicles: 1
+C to D -> Vehicles: 4
+S to T -> Vehicles: 1
+P to Q -> Vehicles: 1
+U to V -> Vehicles: 1
+W to X -> Vehicles: 1
+J to K -> Vehicles: 2
+O to P -> Vehicles: 1
+
+Most congested road: A to B
+```
+
+### Display Blocked Roads
+```text
+Which Road to display?:
+ 1.Blocked roads        2.Under Repair Roads    0.Exit
+Your choice: 1
+Blocked Roads:
+- A to F is blocked.
+- B to C is blocked.
+- H to I is blocked.
+- G to J is blocked.
+- A to G is blocked.
+- K to L is blocked.
+- N to O is blocked.
+- Q to R is blocked.
+- S to T is blocked.
+- W to X is blocked.
+Which Road to display?:
+ 1.Blocked roads        2.Under Repair Roads    0.Exit
+Your choice: 2
+Under Repair Roads:
+- C to D is under repair.
+- C to H is under repair.
+- B to F is under repair.
+- M to N is under repair.
+- P to Q is under repair.
+- U to V is under repair.
+```
+### Handle Emergency Vehicle Routing
+```text
+Enter your choice: 5
+Enter the start intersection : A
+Enter the end intersection : G
+Emergency Vehicle is being routed...... 
+Emergency Vehicle Path: A B F G
+
+```
+### Block Road due to Accident
+```text
+Enter your choice: 6
+Enter the start intersection to block: A
+Enter the end intersection to block: B
+
+Updated Blocked Roads:
+Blocked Roads:
+- A to F is blocked.
+- B to C is blocked.
+- H to I is blocked.
+- G to J is blocked.
+- A to G is blocked.
+- K to L is blocked.
+- N to O is blocked.
+- Q to R is blocked.
+- S to T is blocked.
+- W to X is blocked.
+- A to B is blocked.
+
+```
+###  Simulate Vehicle Routing
+```text
+Enter your choice: 7
+Enter Type of Algorithm :     
+ 1.DFS  2.Dijkstra      0.Exit
+Your choice: 1
+Enter the start intersection : A
+Enter the end intersection : G
+Start: A, End: G
+Paths:
+Path: A B C D E F G | Weight: 39
+Path: A B C D F G | Weight: 38
+Path: A B C D G | Weight: 40
+Path: A B C E F G | Weight: 41
+Path: A B D E F G | Weight: 31
+Path: A B D F G | Weight: 30
+Path: A B D G | Weight: 32
+Path: A B E F G | Weight: 33
+Path: A B F G | Weight: 26
+Path: A C D E F G | Weight: 39
+Path: A C D F G | Weight: 38
+Path: A C D G | Weight: 40
+Path: A C E F G | Weight: 41
+Path: A D E F G | Weight: 37
+Path: A D F G | Weight: 36
+Path: A D G | Weight: 38
+Path: A G | Weight: 25
+Enter Type of Algorithm :
+ 1.DFS  2.Dijkstra      0.Exit
+Your choice: 2
+Enter the start intersection : A
+Enter the end intersection : G
+All paths from A to G:
+Path: A G | Current Weight: 25      
+Path: A D G | Current Weight: 38    
+Path: A B D G | Current Weight: 32  
+Path: A B F G | Current Weight: 26  
+Path: A C D G | Current Weight: 40  
+Path: A D F G | Current Weight: 36  
+Path: A B D F G | Current Weight: 30
+Path: A B E F G | Current Weight: 33
+Enter Type of Algorithm :
+ 1.DFS  2.Dijkstra      0.Exit
+Your choice: 0
+Exiting ......
+```
+### Add Intersection
+```text
+Enter your choice: 8
+Enter the name of the intersection to add: AB
+Added succesfully....
+```
+### Remove Intersection
+
+```text
+Enter your choice: 9
+Enter the name of the intersection to remove: A
+Intersection A removed successfully.
+
+```
+### Graph after adding and removing Intersections
+```text
+B -> (C, 10), (D, 9), (E, 14), (F, 15), (H, 17)
+C -> (D, 7), (E, 12), (H, 13)
+D -> (E, 3), (F, 10), (G, 18)
+E -> (F, 8), (H, 15)
+F -> (G, 6), (I, 11)
+G -> (H, 9), (J, 12)
+H -> (I, 7), (J, 8)
+I -> (J, 5)
+J -> (K, 10)
+K -> (L, 14)
+L -> (M, 6)
+M -> (N, 8)
+N -> (O, 10)
+O -> (P, 12)
+P -> (Q, 5)
+Q -> (R, 15)
+R -> (S, 7)
+S -> (T, 9)
+T -> (U, 6)
+U -> (V, 10)
+V -> (W, 8)
+W -> (X, 6)
+X -> (Y, 5)
+Y -> (Z, 7)
+Z ->
+AB ->
+```
+### Add Road
+
+```text
+Enter your choice: 10
+Enter the start intersection: AB
+Enter the end intersection: B
+Enter the travel time: 33
+
+
+```
+After adding road:
+```text
+B -> (C, 10), (D, 9), (E, 14), (F, 15), (H, 17)
+C -> (D, 7), (E, 12), (H, 13)
+D -> (E, 3), (F, 10), (G, 18)
+E -> (F, 8), (H, 15)
+F -> (G, 6), (I, 11)
+G -> (H, 9), (J, 12)
+H -> (I, 7), (J, 8)
+I -> (J, 5)
+J -> (K, 10)
+K -> (L, 14)
+L -> (M, 6)
+M -> (N, 8)
+N -> (O, 10)
+O -> (P, 12)
+P -> (Q, 5)
+Q -> (R, 15)
+R -> (S, 7)
+S -> (T, 9)
+T -> (U, 6)
+U -> (V, 10)
+V -> (W, 8)
+W -> (X, 6)
+X -> (Y, 5)
+Y -> (Z, 7)
+Z ->
+AB -> (B, 33)
+```
+### Remove Road
+
+```text
+Enter your choice: 11
+Enter the start intersection to remove the road: F
+Enter the end intersection to remove the road: G
+Road between F and G removed successfully.
+
+```
+After Removing,
+```text
+B -> (C, 10), (D, 9), (E, 14), (F, 15), (H, 17)
+C -> (D, 7), (E, 12), (H, 13)
+D -> (E, 3), (F, 10), (G, 18)
+E -> (F, 8), (H, 15)
+F -> (I, 11)
+G -> (H, 9), (J, 12)
+H -> (I, 7), (J, 8)
+I -> (J, 5)
+J -> (K, 10)
+K -> (L, 14)
+L -> (M, 6)
+M -> (N, 8)
+N -> (O, 10)
+O -> (P, 12)
+P -> (Q, 5)
+Q -> (R, 15)
+R -> (S, 7)
+S -> (T, 9)
+T -> (U, 6)
+U -> (V, 10)
+V -> (W, 8)
+W -> (X, 6)
+X -> (Y, 5)
+Y -> (Z, 7)
+Z ->
+AB -> (B, 33)
+```
+### Exiting Simulation
+
+```text
+Enter your choice: 12
+Exiting Simulation. Goodbye!
+```
+
