@@ -42,7 +42,7 @@ int main() {
     maxHeap.makeHeap(ht.hashTable, HASH_TABLE_SIZE);    
    
     string start,end,path;
-    int choice;
+    int choice,c;
     do {
         // Display the menu
         cout << "------ Simulation Dashboard ------\n";
@@ -60,8 +60,27 @@ int main() {
         // Handle menu choices using switch-case
         switch (choice) {
             case 1:
-                cityGraph.printAdjacencyList();
-                cityGraph.displayRoadStatuses();
+              
+                do{
+                    cout << "Enter your Choice :\n 1.Road Network\t2.Road Status\t0.Exit\nYour choice: ";
+                    cin >> c;
+                    if(c==1)
+                    {
+                       cityGraph.printAdjacencyList();
+                    }
+                    else if(c==2)
+                    {
+                        cityGraph.displayRoadStatuses();
+                    }
+                    else if(c==0)
+                    {
+
+                        cout << "Exiting ......";
+                       
+                    }
+                    else
+                        cout<<"Invalid Choice!. Try again!\n";
+                }while(c!=0);    
                 break;
             case 2:
                 traffic.printGreenTimes();
@@ -71,8 +90,30 @@ int main() {
             cout << "\nMost congested road: " << maxHeap.mostCongested()->path[0] <<" to "<< maxHeap.mostCongested()->path[1]<< endl;
                 break;
             case 4:
-                accidentManager.displayBlockedRoads();
-                accidentManager.displayUnderRepairRoads();
+             
+                do{
+                    cout << "Which Road to display?:\n 1.Blocked roads\t2.Under Repair Roads\t0.Exit\nYour choice: ";
+                    cin >> c;
+                    if(c==1)
+                    {
+                        accidentManager.displayBlockedRoads();
+                    }
+                    else if(c==2)
+                    {
+                        accidentManager.displayUnderRepairRoads();
+                    }
+                    else if(c==0)
+                    {
+
+                        cout << "Exiting ......";
+                       
+                    }
+                    else
+                        cout<<"Invalid Choice!. Try again!\n";
+                }while(c!=0);    
+                break;
+               
+                
                 break;
             case 5:
                 cout << "Enter the start intersection : ";
@@ -94,7 +135,7 @@ int main() {
                 break;
             }
             case 7:
-                int c;
+                
                 do{
                     cout << "Enter Type of Algorithm :\n 1.DFS\t2.Dijkstra\t0.Exit\nYour choice: ";
                     cin >> c;
@@ -149,6 +190,8 @@ int main() {
     //     temp = temp->next;
     // }
     // visualizer.drawSimulation(cityGraph, vehicles);
+
+    
     return 0;
 }
 

@@ -238,6 +238,13 @@ bool isBlocked(const std::string& nodeName1, const std::string& nodeName2);
      * @return The number of vertices in the graph.
      */
     int getVertexCount();
+
+    /**
+     * @brief Gets all edges in the graph.
+     * @param vertices Array to store the names of edges.
+     * @param count The number of vertices found.
+     */
+    void getAllEdges(std::string edges[][3], int& count);
 };
 
 #endif // GRAPH_H

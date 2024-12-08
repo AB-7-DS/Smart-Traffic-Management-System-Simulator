@@ -362,3 +362,28 @@ void Graph::getVertices(std::string* vertices, int& count) {
         temp = temp->next;  // Move to the next vertex
     }
 }
+
+
+void Graph::getAllEdges(std::string edges[][3], int& count) {
+    count = 0; // Initialize the edge count
+    VertexNode* currentVertexNode = headVertex;
+
+    while (currentVertexNode) {
+        Vertex* vertex = currentVertexNode->vertex;
+        EdgeNode* currentEdgeNode = vertex->edges;
+
+        while (currentEdgeNode) {
+            Edge* edge = currentEdgeNode->edge;
+
+            // Add the edge details to the edges array
+            edges[count][0] = vertex->name;                    // Start vertex
+            edges[count][1] = edge->destination->name;         // End vertex
+            edges[count][2] = std::to_string(edge->travelTime); // Edge weight
+
+            count++; // Increment the edge count
+            currentEdgeNode = currentEdgeNode->next;
+        }
+
+        currentVertexNode = currentVertexNode->next; // Move to the next vertex
+    }
+}
