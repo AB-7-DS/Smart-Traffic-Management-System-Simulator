@@ -709,18 +709,28 @@ Enter your choice: 12
 Exiting Simulation. Goodbye!
 ```
 # SFML OUTPUTS
-## Originally the cars are moving along their best path from one intersection to the next
+## Original output 
+
 ![image](https://github.com/user-attachments/assets/eef2cb6b-a37f-4bd1-b980-a2d826838134)
+
+The cars are moving along their best path from one intersection to the next
 The cars with blocked roads in their path do not move across the blocked path.
 The blocked roads are magenta colored. 
 The graph is directed as the edge drawn from A -> B and the edge drawn from B -> A are different.
 The edges that vehicles traverse have their weights displayed in blue font.
+
 ## After removing intersection Z and road from Z to Y
 ![image](https://github.com/user-attachments/assets/cbc52707-6db2-4f21-826c-637a1f897d26)
+
 ## After removing intersections A, B, C
 ![image](https://github.com/user-attachments/assets/82f1a25e-601a-4b9f-9a9f-616a297ecdd5)
+
+
 The vehicles that have no valid path do not move forward, while all other vehicles move to their destination and then stop. 
+
 ## Blocked Multiple Roads
 ![image](https://github.com/user-attachments/assets/7e53d8d2-8ad6-4bcd-aea4-e8d0efdabb13)
+
+
 When multiple roads from intersection A are blocked the cars stay at intersection A.
 
