@@ -1,12 +1,28 @@
 #ifndef CONGESTIONMAXHEAP_H
 #define CONGESTIONMAXHEAP_H
+
 # include "RoadNode.h"
 # include "congestionMonitoring.h"
+
+/**
+ * @class CongestionMaxHeap
+ * @brief A class to represent a max heap specifically for managing road congestion data.
+ * 
+ * This class provides functionalities to create and manage a max heap of RoadNode objects,
+ * which are used to monitor and manage road congestion.
+ */
 
 class CongestionMaxHeap{
     private:
         RoadNode* root; //< Pointer to the root of the heap
-
+        
+        /**
+         * @brief Performs an inorder traversal of the heap.
+         * 
+         * This is a helper function used for debugging and visualization purposes.
+         * 
+         * @param root The root node of the heap/subtree.
+         */
         void inorder(RoadNode* root);
     public:
         /**
@@ -64,4 +80,4 @@ class CongestionMaxHeap{
         void heapifyDown(RoadNode* node);
 
 };
-#endif
+#endif  // CONGESTIONMAXHEAP_H
