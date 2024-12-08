@@ -1,13 +1,13 @@
-#include "graph.h"
-#include "accidents.h"
-#include "vehicle.h"
-#include "vehicles.h"
-#include "Route.h"
-#include "roadQueue.h"
-#include "congestionMonitoring.h"
-#include "congestionMaxHeap.h"
-#include "trafficSignal.h"
-#include "trafficLightManagement.h"
+#include "graph.cpp"
+#include "accidents.cpp"
+#include "vehicle.cpp"
+#include "vehicles.cpp"
+#include "route.cpp"
+#include "roadQueue.cpp"
+#include "congestionMonitoring.cpp"
+#include "congestionMaxHeap.cpp"
+#include "trafficSignal.cpp"
+#include "trafficLightsManagement.cpp"
 #include "visualizer.h"
 #include <iostream>
 #include <string>
@@ -40,8 +40,7 @@ int main() {
     traffic.makeTrafficSignals();
     CongestionMaxHeap maxHeap;
     maxHeap.makeHeap(ht.hashTable, HASH_TABLE_SIZE);    
-    
-    cout << "\nmost congested road: " << maxHeap.mostCongested()->path[0] << maxHeap.mostCongested()->path[1]<< endl;
+   
     string start,end,path;
     int choice;
     do {
@@ -69,15 +68,16 @@ int main() {
                 break;
             case 3:
                 ht.printHashTable();
+            cout << "\nMost congested road: " << maxHeap.mostCongested()->path[0] <<" to "<< maxHeap.mostCongested()->path[1]<< endl;
                 break;
             case 4:
                 accidentManager.displayBlockedRoads();
                 accidentManager.displayUnderRepairRoads();
                 break;
             case 5:
-                cout << "Enter the start intersection to block: ";
+                cout << "Enter the start intersection : ";
                 cin >> start;
-                cout << "Enter the end intersection to block: ";
+                cout << "Enter the end intersection : ";
                 cin >> end;
                 //will added check function to check if vehicle is emergency
                 path = gps.rerouteEmergencyVehicle(start, end);
@@ -94,12 +94,37 @@ int main() {
                 break;
             }
             case 7:
-                cout << "Enter the start intersection : ";
-                cin >> start;
-                cout << "Enter the end intersection : ";
-                cin >> end;
-                gps.printAllPaths(start, end);
+                int c;
+                do{
+                    cout << "Enter Type of Algorithm :\n 1.DFS\t2.Dijkstra\t0.Exit\nYour choice: ";
+                    cin >> c;
+                    if(c==1)
+                    {
+                        cout << "Enter the start intersection : ";
+                        cin >> start;
+                        cout << "Enter the end intersection : ";
+                        cin >> end;
+                        gps.printAllPaths(start, end);
+                    }
+                    else if(c==2)
+                    {
 
+                        cout << "Enter the start intersection : ";
+                        cin >> start;
+                        cout << "Enter the end intersection : ";
+                        cin >> end;
+                        
+                    gps.printAllPathsDijkstra(start,end);
+                    }
+                    else if(c==0)
+                    {
+
+                        cout << "Exiting ......";
+                       
+                    }
+                    else
+                        cout<<"Invalid Choice!. Try again!\n";
+                }while(c!=0);    
                 break;
             case 8:
                 cout << "Exiting Simulation. Goodbye!\n";
@@ -108,7 +133,7 @@ int main() {
                 cout << "Invalid choice! Please try again.\n";
         }
 
-        cout << endl; // Line break for better readability
+        cout << endl; 
     } while (choice != 8);
     
     Visualizer visualizer;

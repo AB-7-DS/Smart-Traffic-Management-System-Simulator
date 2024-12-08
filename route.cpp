@@ -309,3 +309,80 @@ string GPS::rerouteEmergencyVehicle(const string& startName, const string& endNa
     return shortestPath;
 
 }
+
+void GPS::printAllPathsDijkstra(const std::string& startName, const std::string& endName) {
+    Vertex* start = graph->findVertex(startName);
+    Vertex* end = graph->findVertex(endName);
+
+    if (!start || !end) {
+        std::cerr << "Error: One or both intersections not found!" << std::endl;
+        return;
+    }
+
+    struct PathNode {
+        Vertex* vertex;                // Current vertex
+        std::string path[MAX_VERTICES]; // Path taken so far
+        int pathLength;                // Number of vertices in the path
+        int weight;                    // Total weight of the path
+
+        // Default constructor
+        PathNode() : vertex(nullptr), pathLength(0), weight(0) {}
+
+        // Parameterized constructor
+        PathNode(Vertex* v, int w) : vertex(v), pathLength(0), weight(w) {}
+    };
+
+    PathNode queue[MAX_VERTICES];
+    bool visited[MAX_VERTICES] = {false};
+    int queueStart = 0, queueEnd = 0;
+
+    // Initialize the queue with the starting vertex
+    queue[queueEnd] = PathNode(start, 0);
+    queue[queueEnd].path[0] = start->name;
+    queue[queueEnd].pathLength = 1;
+    queueEnd++;
+
+    std::cout << "All paths from " << startName << " to " << endName << ":\n";
+
+    while (queueStart != queueEnd) {
+        PathNode current = queue[queueStart++];
+        Vertex* currentVertex = current.vertex;
+
+        if (currentVertex == end) {
+            // Print the path if we reached the destination
+            std::cout << "Path: ";
+            for (int i = 0; i < current.pathLength; i++) {
+                std::cout << current.path[i];
+                if (i < current.pathLength - 1) std::cout << " ";
+            }
+            std::cout << " | Current Weight: " << current.weight << "\n";
+            continue;
+        }
+
+        // Visit neighbors
+        EdgeNode* edgeNode = currentVertex->edges;
+        while (edgeNode) {
+            Vertex* neighbor = edgeNode->edge->destination;
+            int neighborIndex = getVertexIndex(neighbor->name);
+
+            // Enqueue the new path without checking blocked edges
+            if (!visited[neighborIndex]) {
+                PathNode newPath(neighbor, current.weight + edgeNode->edge->travelTime);
+                for (int i = 0; i < current.pathLength; i++) {
+                    newPath.path[i] = current.path[i];
+                }
+                newPath.path[current.pathLength] = neighbor->name;
+                newPath.pathLength = current.pathLength + 1;
+
+                queue[queueEnd++] = newPath;
+            }
+
+            edgeNode = edgeNode->next;
+        }
+
+        // Mark the current vertex as visited
+        visited[getVertexIndex(currentVertex->name)] = true;
+    }
+}
+
+

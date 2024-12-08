@@ -85,13 +85,11 @@ public:
     * @param startName The name of the starting intersection.
     * @param endName The name of the destination intersection.
     */
-   string getPathAsString(const string& startName, const string& endName);
+  
    string rerouteEmergencyVehicle(const string& startName, const string& endName);
-    void findAllOptimalPaths(Vertex* start, Vertex* end, 
-                           string path[], int pathIndex, 
-                           string allPaths[][MAX_VERTICES], 
-                           int& allPathsCount, bool visited[], 
-                           int totalWeight[], int& totalWeightCount);
+    string getPathAsString(const string& startName, const string& endName);
+    void findAllOptimalPaths(Vertex* start, Vertex* end, string path[], int pathIndex, string allPaths[][MAX_VERTICES], int& allPathsCount, bool visited[], int totalWeight[], int& totalWeightCount);
+    void printAllPathsDijkstra(const string& startName, const string& endName);
 };
 
 #endif
