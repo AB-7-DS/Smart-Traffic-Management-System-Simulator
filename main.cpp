@@ -8,7 +8,7 @@
 #include "congestionMaxHeap.cpp"
 #include "trafficSignal.cpp"
 #include "trafficLightsManagement.cpp"
-//#include "visualizer.h"
+#include "visualizer.h"
 #include <iostream>
 #include <string>
 using namespace std;
@@ -33,7 +33,6 @@ int main() {
     vehicles.loadAndReadCSVs();
     vehicles.addPaths(gps);
     CongestionMonitoring ht(vehicles.getHead());
-    ht.makeHashTable(vehicles.getHead());
     ht.makeHashTable(vehicles.getHead());
 
     TrafficLightManagement traffic;
@@ -177,20 +176,19 @@ int main() {
         cout << endl; 
     } while (choice != 8);
     
-    // Visualizer visualizer;
-    // Vehicle *temp = vehicles.getHead();
-    // while(temp!=NULL){
-    //     //find best path for all vehicles
-    //     string start = temp->startIntersection;
-    //     string end = temp->endIntersection;
-    //     string path = (gps.rerouteEmergencyVehicle(start,end));
-    //     if(path!=""){
-    //     temp->setPath(path);
-    //     }
-    //     temp = temp->next;
-    // }
-    // visualizer.drawSimulation(cityGraph, vehicles);
-
+    Visualizer visualizer;
+    Vehicle *temp = vehicles.getHead();
+    while(temp!=NULL){
+        //find best path for all vehicles
+        string start = temp->startIntersection;
+        string end = temp->endIntersection;
+        string path = (gps.rerouteEmergencyVehicle(start,end));
+        if(path!=""){
+        temp->setPath(path);
+        }
+        temp = temp->next;
+    }
+    visualizer.drawSimulation(cityGraph, vehicles,traffic,ht,accidentManager);
     
     return 0;
 }
