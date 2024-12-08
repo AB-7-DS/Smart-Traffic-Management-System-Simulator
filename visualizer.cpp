@@ -1,7 +1,10 @@
 #include "visualizer.h"
 #include <SFML/Graphics.hpp>
 #include<cmath>
-Visualizer::Visualizer(){}
+Visualizer::Visualizer(){
+
+    
+}
 
 void Visualizer::drawSimulation(Graph &graph, Vehicles &vehicles,TrafficLightManagement &traffic,CongestionMonitoring &ht,Accident_roads &accidentManager) {
 sf::RenderWindow window(sf::VideoMode(800, 800), "Graph Visualization");
@@ -12,7 +15,7 @@ sf::RenderWindow window(sf::VideoMode(800, 800), "Graph Visualization");
                 window.close();
         }
 
-        window.clear(sf::Color::White);
+        window.clear(sf::Color::Black);
 
         VertexNode* currentVertexNode = graph.headVertex;
         std::map<std::string, sf::Vector2f> positions;
@@ -41,14 +44,10 @@ sf::RenderWindow window(sf::VideoMode(800, 800), "Graph Visualization");
         currentVertexNode = graph.headVertex;
         while (currentVertexNode) {
             Vertex* vertex = currentVertexNode->vertex;
-            sf::CircleShape circle(20);
-            circle.setFillColor(sf::Color::Blue);
 
             // Calculate the position of the vertex
             float x = center.x + radius * cos(currentAngle);
             float y = center.y + radius * sin(currentAngle);
-            circle.setPosition(x, y);
-            window.draw(circle);
 
             positions[vertex->name] = sf::Vector2f(x + 20, y + 20);
 
@@ -57,7 +56,7 @@ sf::RenderWindow window(sf::VideoMode(800, 800), "Graph Visualization");
             label.setFont(font);
             label.setString(vertex->name);
             label.setCharacterSize(47); // in pixels
-            label.setFillColor(sf::Color::Black);
+            label.setFillColor(sf::Color::White);
             label.setPosition(x, y-7); // position of the label
             window.draw(label);
             drawVehicles(vehicles, vertex->name, positions[vertex->name], window);
@@ -70,23 +69,78 @@ sf::RenderWindow window(sf::VideoMode(800, 800), "Graph Visualization");
         while (currentVertexNode) {
             Vertex* vertex = currentVertexNode->vertex;
             EdgeNode* currentEdgeNode = vertex->edges;
+
+            while (currentEdgeNode) {
+                Edge* edge = currentEdgeNode->edge;
+
+                // Only draw the edge if it exists as a directed path
+                std::string start = vertex->name;
+                std::string end = edge->destination->name;
+
+                // Check if the edge exists in the adjacency list (directed A -> B only)
+                if (graph.getEdgeWeight(start, end) != -1) {
+                    // Get the color for the edge
+                    sf::Color color = choseColor(currentEdgeNode, vertex, traffic, ht, accidentManager);
+
+                    // Create the vertex array with the correct color
+                    sf::Vertex line[] = {
+                        sf::Vertex(positions[start], color), // Start vertex
+                        sf::Vertex(positions[end], color)   // End vertex
+                    };
+
+                    // Draw the edge
+                    window.draw(line, 2, sf::Lines);
+                }
+
+                currentEdgeNode = currentEdgeNode->next;
+            }
+
+            currentVertexNode = currentVertexNode->next;
+        }
+
+        sf::Font font2;
+        if (!font2.loadFromFile("sprites/font3.ttf")) {
+            std::cerr << "Couldn't load font\n";
+            return;
+        }
+        // Third pass: draw edge weights
+        currentVertexNode = graph.headVertex;
+        while (currentVertexNode) {
+            Vertex* vertex = currentVertexNode->vertex;
+            EdgeNode* currentEdgeNode = vertex->edges;
             while (currentEdgeNode) {
             Edge* edge = currentEdgeNode->edge;
-            sf::Color color = choseColor(currentEdgeNode,vertex,traffic,ht,accidentManager);
-            // if(color==sf::Color::Yellow){
-            //     cout<<"Yellow color\n";
-            // } // debugging statement
+            sf::Vector2f startPos = positions[vertex->name];
+            sf::Vector2f endPos = positions[edge->destination->name];
+            sf::Vector2f midPos = (startPos + endPos) / 2.0f;
+            // Determine the direction of the edge
+            sf::Vector2f direction = endPos - startPos;
+            float angle = atan2(direction.y, direction.x);
+            if (angle < 0) {
+                // Offset the line position slightly if the color is blue
+                startPos += sf::Vector2f(5, 5);
+                endPos += sf::Vector2f(5, 5);
+            }
+            sf::Color edgeColor = choseColor(currentEdgeNode, vertex, traffic, ht, accidentManager);
             sf::Vertex line[] = {
-                sf::Vertex(positions[vertex->name], color),
-                sf::Vertex(positions[edge->destination->name], color)
+                sf::Vertex(startPos, edgeColor),
+                sf::Vertex(endPos, edgeColor)
             };
             window.draw(line, 2, sf::Lines);
+
+            sf::Text weightLabel;
+            weightLabel.setFont(font2);
+            weightLabel.setString(std::to_string(edge->travelTime));
+            weightLabel.setCharacterSize(20);
+            weightLabel.setFillColor(sf::Color::Blue);
+            weightLabel.setPosition(midPos);
+            window.draw(weightLabel);
+
             currentEdgeNode = currentEdgeNode->next;
             }
             currentVertexNode = currentVertexNode->next;
         }
         window.display();
-        //delay for 1 second
         sf::sleep(sf::seconds(1));
     }
 }
@@ -125,7 +179,7 @@ sf::Color Visualizer::choseColor(EdgeNode *edgeNode, Vertex *vertex, TrafficLigh
     
     //Check if the edge is blocked
     if(edgeNode->edge->isBlocked()){
-        return sf::Color::Blue;
+        return sf::Color::Magenta;
     }
     // Check if the edge is congested
     // if (ht.findRoadNode(vertex->name[0], vertex->edges->edge->destination->name[0])->carCount > 5) {
@@ -141,5 +195,5 @@ sf::Color Visualizer::choseColor(EdgeNode *edgeNode, Vertex *vertex, TrafficLigh
     }
 
     // Default color if none of the above conditions are met
-    return sf::Color::Black;
+    return sf::Color::White;
 }
