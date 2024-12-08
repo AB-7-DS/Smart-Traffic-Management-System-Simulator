@@ -117,18 +117,7 @@ void Graph::addEdge(const std::string& start, const std::string& end, int travel
         current->next = newEdgeNode;
     }
 
-    // If the graph is undirected, add the reverse edge at the end of the end vertex's edge list
-    newEdge = new Edge(startVertex, travelTime);
-    newEdgeNode = new EdgeNode(newEdge);
-    if (!endVertex->edges) {
-        endVertex->edges = newEdgeNode;
-    } else {
-        EdgeNode* current = endVertex->edges;
-        while (current->next) {
-            current = current->next;
-        }
-        current->next = newEdgeNode;
-    }
+    
 }
 void Graph::loadRoadData(const std::string& filename) {
     std::ifstream file(filename);
