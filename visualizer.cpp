@@ -1,12 +1,9 @@
 #include "visualizer.h"
 #include <SFML/Graphics.hpp>
 #include<cmath>
-Visualizer::Visualizer(){
+Visualizer::Visualizer(){}
 
-    
-}
-
-void Visualizer::drawSimulation(Graph &graph, Vehicles &vehicles) {
+void Visualizer::drawSimulation(Graph &graph, Vehicles &vehicles,TrafficLightManagement &traffic,CongestionMonitoring &ht,Accident_roads &accidentManager) {
 sf::RenderWindow window(sf::VideoMode(800, 800), "Graph Visualization");
     while (window.isOpen()) {
         sf::Event event;
@@ -75,11 +72,15 @@ sf::RenderWindow window(sf::VideoMode(800, 800), "Graph Visualization");
             EdgeNode* currentEdgeNode = vertex->edges;
             while (currentEdgeNode) {
             Edge* edge = currentEdgeNode->edge;
+            sf::Color color = choseColor(currentEdgeNode,vertex,traffic,ht,accidentManager);
+            // if(color==sf::Color::Yellow){
+            //     cout<<"Yellow color\n";
+            // } // debugging statement
             sf::Vertex line[] = {
-                sf::Vertex(positions[vertex->name], sf::Color::Black),
-                sf::Vertex(positions[edge->destination->name], sf::Color::Black)
+                sf::Vertex(positions[vertex->name], color),
+                sf::Vertex(positions[edge->destination->name], color)
             };
-            window.draw(line, 20, sf::Lines);
+            window.draw(line, 2, sf::Lines);
             currentEdgeNode = currentEdgeNode->next;
             }
             currentVertexNode = currentVertexNode->next;
@@ -119,4 +120,26 @@ void Visualizer::drawVehicles(Vehicles &vehicles, const std::string &intersectio
  
 float Visualizer::getElapsedTimeInSeconds() {
     return clock.getElapsedTime().asSeconds();
+}
+sf::Color Visualizer::choseColor(EdgeNode *edgeNode, Vertex *vertex, TrafficLightManagement &traffic, CongestionMonitoring &ht, Accident_roads &accidentManager) {
+    
+    //Check if the edge is blocked
+    if(edgeNode->edge->isBlocked()){
+        return sf::Color::Blue;
+    }
+    // Check if the edge is congested
+    // if (ht.findRoadNode(vertex->name[0], vertex->edges->edge->destination->name[0])->carCount > 5) {
+    //     return sf::Color::Red;
+    // }
+    
+
+    // Check if the edge has a green light
+    string signal = traffic.getSignal(vertex->name)->getState();
+    if (signal=="green") {
+        cout<<"Green light"<<endl;
+        return sf::Color::Green;
+    }
+
+    // Default color if none of the above conditions are met
+    return sf::Color::Black;
 }
