@@ -734,3 +734,8 @@ The vehicles that have no valid path do not move forward, while all other vehicl
 
 When multiple roads from intersection A are blocked the cars stay at intersection A.
 
+## Adding Intersection 'AA'
+
+![image](https://github.com/user-attachments/assets/9acf0cfe-df78-4c7b-9d06-39b394df77d4)
+
+The font chosen shows each letter in a circle, so 2 characters show as 2 circles. However, only one intersection called 'AA' has been added to the graph.
