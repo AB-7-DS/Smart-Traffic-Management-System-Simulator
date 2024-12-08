@@ -190,6 +190,7 @@ int main() {
         if(path!=""){
         temp->setPath(path);
         }
+        else temp->presetPath = false;
         temp = temp->next;
     }
     visualizer.drawSimulation(cityGraph, vehicles,traffic,ht,accidentManager);
