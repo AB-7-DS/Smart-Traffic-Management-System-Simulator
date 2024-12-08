@@ -1,4 +1,6 @@
 #include "trafficSignal.h"
+#include "visualizer.h"
+#include <cmath>
 #include <cctype>
 #include <iostream>
 
@@ -51,10 +53,32 @@ int TrafficSignal::getDuration() {
       return duration;
 }
 
-void TrafficSignal::advanceState() {
-      // TO DO: This method will also be implemented after the graphics utility class is implemented as it will use a global timer
+void TrafficSignal::advanceState(Visualizer* visualizer) {
+
+      // to advance from red to yellow, call the turn green method
+
+      // this->temp = visualizer->getElapsedTimeInSeconds();
+      if (state == "yellow") {
+            if (abs(this->temp-visualizer->getElapsedTimeInSeconds()) >= transitionTime) {
+                  state = "green";
+                  this->temp = visualizer->getElapsedTimeInSeconds();
+            }
+      }
+      if (state == "green") {
+            if (abs(this->temp-visualizer->getElapsedTimeInSeconds()) >= this->duration) {
+                  state = "red";
+                  this->temp = visualizer->getElapsedTimeInSeconds();
+            }
+      }
+
 }
 
 int TrafficSignal::getTransitionTime() {
       return transitionTime;
 }
+
+void TrafficSignal::turnGreen(Visualizer* visualizer) {
+      state = "yellow";
+      this->temp = visualizer->getElapsedTimeInSeconds();
+}
+

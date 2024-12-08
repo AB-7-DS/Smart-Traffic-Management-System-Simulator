@@ -2,6 +2,7 @@
 #define TRAFFIC_LIGHT_MANAGEMENT_H
 # include "trafficSignal.h"
 # include "congestionMonitoring.h"
+# include "visualizer.h" 
 # include <string>
 /**
  * @class TrafficLightManagement
@@ -54,6 +55,15 @@ class TrafficLightManagement {
              * @return TrafficSignal* The signal for the given intersection.
              */
             TrafficSignal* getSignal(std::string intersection);
+            /**
+             * @brief Manages the traffic lights at each intersection
+             * 
+             * Call this function continuously to automatically manage the traffic lights.
+             * 
+             * @param mostCongestedIntersection The intersection with the most congestion.
+             * @param vs The visualizer object.
+             */
+            void manageTrafficLights(char mostCongestedIntersection, Visualizer* vs);
 };
 
 #endif

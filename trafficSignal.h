@@ -1,6 +1,7 @@
 
 #ifndef TRAFFIC_SIGNAL_H
 #define TRAFFIC_SIGNAL_H
+#include "visualizer.h"
 #include <string>
 
 /**
@@ -74,6 +75,7 @@ class TrafficSignal {
             char intersectionId; //< ID of the intersection for which the signal is
             int duration; //< duration a state is to be maintained in seconds
             TrafficSignal* next; //< pointer to the next signal in the list
+            int temp; //< temporary variable to store the duration the current state has been maintained
 
 
 
@@ -134,9 +136,16 @@ class TrafficSignal {
             int getTransitionTime();
 
             /**
-             * @brief Advance the state of the traffic signal to the next state in the sequence "red" -> "yellow" -> "green" -> "yellow" -> "red"
+             * @brief Advance the state of the traffic signal to the next state in the sequence "red" -> "yellow" -> "green" -> "red"
+             * 
+             * this function must be called continuously in the mainloop to change the state of the signal
              */
-            void advanceState();
+            void advanceState(Visualizer* visualizer);
+
+            /**
+             * @brief Turn the traffic signal from red to green
+             */
+            void turnGreen(Visualizer* visualizer);
 };
 
 #endif

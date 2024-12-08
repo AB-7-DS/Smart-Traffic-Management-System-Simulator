@@ -83,3 +83,22 @@ TrafficSignal* TrafficLightManagement::getSignal(string intersection) {
       }
       return nullptr;
 }
+
+void TrafficLightManagement::manageTrafficLights(char mostCongestedRoad, Visualizer* vs){
+      TrafficSignal* temp = headSignal;
+      while (temp) {
+            if (temp->intersectionId == mostCongestedRoad) {
+                  temp->turnGreen(vs);
+            }
+            temp = temp->next;
+            temp->advanceState(vs);
+      }
+}
+
+
+
+
+
+
+
+
