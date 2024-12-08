@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 using namespace std;
+
 // Forward declaration of the Accident_roads class
 class Accident_roads;
 
@@ -25,7 +26,6 @@ public:
      * @param name The name of the intersection.
      */
     Vertex(const std::string& name);
-
   
 };
 
@@ -41,27 +41,29 @@ public:
     Vertex* destination;      /**< Destination vertex (intersection) */
     int travelTime;           /**< Travel time to the destination */
     bool blocked;             /**< Whether the Edge is blocked or not */
-    bool underRepaired;
-  /**
+    bool underRepaired;       /**< Whether the Edge is under repair */
+
+    /**
      * @brief Checks if the edge is blocked.
      * @return true if the edge is blocked, false otherwise.
      */
     bool isBlocked() const;
+
     /**
-     * @brief Checks if the Edge is under Repaired.
-     * @return true if the intersection is under Repaired, false otherwise.
+     * @brief Checks if the Edge is under repair.
+     * @return true if the edge is under repair, false otherwise.
      */
     bool isUnderRepaired() const;
 
-
     /**
-     * @brief Sets the blocked status of the intersection.
+     * @brief Sets the blocked status of the edge.
      * @param status The new blocked status (true for blocked, false for not blocked).
      */
     void setBlocked(bool status);
-     /**
-     * @brief Sets the blocked status of the intersection.
-     * @param status The new blocked status (true for blocked, false for not blocked).
+
+    /**
+     * @brief Sets the under-repair status of the edge.
+     * @param status The new under-repair status (true for under repair, false for not under repair).
      */
     void setUnderRepaired(bool status);
     
@@ -135,7 +137,6 @@ public:
 
     /**
      * @brief Adds a vertex (intersection) to the graph.
-     * 
      * @param name The name of the new intersection.
      */
     void addVertex(const std::string& name);
@@ -146,16 +147,28 @@ public:
      * @return A pointer to the Vertex object if found, or nullptr if not found.
      */
     Vertex* findVertex(const std::string& name);
-     void removeVertex(const string& name);
+
+    /**
+     * @brief Removes a vertex (intersection) from the graph.
+     * @param name The name of the vertex to remove.
+     */
+    void removeVertex(const string& name);
+
     /**
      * @brief Adds a road (edge) between two intersections.
-     * 
      * @param start The name of the starting intersection.
      * @param end The name of the destination intersection.
      * @param travelTime The travel time between the two intersections.
      */
     void addEdge(const std::string& start, const std::string& end, int travelTime);
-    void removeEdge(const string& start, const string& end) ;
+
+    /**
+     * @brief Removes a road (edge) between two intersections.
+     * @param start The name of the starting intersection.
+     * @param end The name of the destination intersection.
+     */
+    void removeEdge(const string& start, const string& end);
+
     /**
      * @brief Loads road network data from a file.
      * @param filename The name of the CSV file to load road data from (default is "road_network.csv").
@@ -169,30 +182,27 @@ public:
 
     /**
      * @brief Marks the specified intersections as blocked or unblocked.
-     * 
      * @param intersection1 The name of the first intersection.
      * @param intersection2 The name of the second intersection.
      * @param isBlocked The new blocked status (true if blocked, false if unblocked).
      */
-   void markEdgeAsBlocked(const string& intersection1, const string& intersection2, bool isBlocked) ;
+    void markEdgeAsBlocked(const string& intersection1, const string& intersection2, bool isBlocked);
+
     /**
-     * @brief Marks the specified Edges as underRepair or not.
-     * 
+     * @brief Marks the specified Edges as under repair or not.
      * @param intersection1 The name of the first intersection.
      * @param intersection2 The name of the second intersection.
-     * @param isUnderRepaired The new blocked status (true if blocked, false if unblocked).
+     * @param isUnderRepaired The new under-repair status (true if under repair, false if not).
      */
-   void markEdgesAsUnderRepaired(const string& intersection1, const string& intersection2, bool isUnderRepaired);
+    void markEdgesAsUnderRepaired(const string& intersection1, const string& intersection2, bool isUnderRepaired);
+
     /**
      * @brief Displays the blocked intersections in the graph.
      */
     void displayBlockedEdges();
 
-   
-      
     /**
      * @brief Adds an edge to the specified vertex.
-     * 
      * @param vertex The vertex to which the edge will be added.
      * @param edge The edge to add to the vertex.
      */
@@ -208,7 +218,7 @@ public:
      * @param nodeName The name of the vertex to check.
      * @return true if the vertex is blocked, false otherwise.
      */
-bool isBlocked(const std::string& nodeName1, const std::string& nodeName2);
+    bool isBlocked(const std::string& nodeName1, const std::string& nodeName2);
 
     /**
      * @brief Gets the neighbors of a specified vertex.
@@ -242,7 +252,7 @@ bool isBlocked(const std::string& nodeName1, const std::string& nodeName2);
     /**
      * @brief Gets all edges in the graph.
      * @param vertices Array to store the names of edges.
-     * @param count The number of vertices found.
+     * @param count The number of edges found.
      */
     void getAllEdges(std::string edges[][3], int& count);
 };

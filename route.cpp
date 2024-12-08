@@ -1,5 +1,5 @@
 #include "Route.h"
-#include <bits/stdc++.h>
+
 using namespace std;
 // Constructor
 GPS::GPS(Graph* graph) : graph(graph) {
@@ -330,7 +330,8 @@ string GPS::rerouteEmergencyVehicle(const string& startName, const string& endNa
             Vertex* neighbor = edgeNode->edge->destination;
             int neighborIndex = getVertexIndex(neighbor->name);
 
-            if (closedSet[neighborIndex]) {
+            // Skip if the road is blocked
+            if (edgeNode->edge->blocked || closedSet[neighborIndex]) {
                 edgeNode = edgeNode->next;
                 continue;
             }
@@ -363,6 +364,7 @@ string GPS::rerouteEmergencyVehicle(const string& startName, const string& endNa
     cout << "No path found between " << startName << " and " << endName << endl;
     return ""; // Return an empty string if no path is found
 }
+
 
 // Heuristic function: Straight-line distance (dummy implementation)
 int GPS::heuristic(const Vertex* a, const Vertex* b) {
