@@ -7,7 +7,7 @@
 #include "congestionMonitoring.h"
 #include "congestionMaxHeap.h"
 #include "trafficSignal.h"
-#include "trafficLightsManagement.h"
+#include "trafficLightManagement.h"
 #include "visualizer.h"
 #include <iostream>
 #include <string>
