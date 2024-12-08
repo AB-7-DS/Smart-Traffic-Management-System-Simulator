@@ -4,7 +4,7 @@
 
 ## 📖 Overview
 
-The **Smart Traffic Management System** is a practical project designed to replicate real-world traffic management in a city.It is a dynamic traffic management system designed to simulate a city's road network. The system supports essential functionalities like managing intersections, displaying traffic statuses, handling blocked and under-repair roads, and routing vehicles through the network.
+The **Smart Traffic Management System** is a practical project showcasing important data structures, designed to replicate real-world traffic management in a city.It is a dynamic traffic management system designed to simulate a city's road network. The system supports essential functionalities like managing intersections, displaying traffic statuses, handling blocked and under-repair roads, and routing vehicles through the network.
 
 ---
 
