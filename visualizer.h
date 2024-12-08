@@ -7,6 +7,9 @@
 #include "graph.h"
 #include "vehicle.h"
 #include "vehicles.h"
+#include "accidents.h"
+#include "trafficLightManagement.h"
+#include "congestionMonitoring.h"
 
 class Visualizer {
 private:
@@ -40,7 +43,7 @@ public:
  * @param graph The graph representing the traffic network.
  * @param vehicles The collection of vehicles to be drawn.
  */
-    void drawSimulation(Graph &graph, Vehicles &vehicles);
+    void drawSimulation(Graph &graph, Vehicles &vehicles,TrafficLightManagement &traffic,CongestionMonitoring &ht,Accident_roads &accidentManager);
 
     /**
  * @brief Draws vehicles at the specified intersection.
@@ -55,6 +58,7 @@ public:
 
 
    float getElapsedTimeInSeconds();
+   sf::Color choseColor(EdgeNode *edge,Vertex *vertex,TrafficLightManagement &traffic,CongestionMonitoring &ht,Accident_roads &accidentManager);
  
 };
 #endif // VISUALIZER_H
